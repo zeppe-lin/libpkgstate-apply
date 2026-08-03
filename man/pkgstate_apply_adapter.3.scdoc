@@ -12,7 +12,7 @@ pkgstate_apply_adapter - admit completed native application as installed state
 
 # DESCRIPTION
 
-*project_completed_application()* validates one completed *libpkgapply* 2.1
+*project_completed_application()* validates one completed native *libpkgapply*
 operation against the exact operation-specific request, accepted plan, target
 context, lease-bound state projection, expected native snapshot, ownership
 universe, and completed path consequences. It returns an immutable

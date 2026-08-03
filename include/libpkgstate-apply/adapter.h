@@ -6,6 +6,8 @@
  */
 #pragma once
 
+#include <libpkgstate-apply/export.h>
+
 #include <cstdint>
 #include <stdexcept>
 #include <string>
@@ -35,7 +37,7 @@ enum class projection_error_code : std::uint8_t {
   publication_construction = 13,
 };
 
-class projection_error final : public std::invalid_argument {
+class PKGSTATE_APPLY_API projection_error final : public std::invalid_argument {
 public:
   projection_error(projection_error_code code, std::string message);
   [[nodiscard]] projection_error_code code() const noexcept;
@@ -52,7 +54,7 @@ private:
  * caller-selected initial installation reason. No caller-supplied build or
  * source authority is accepted separately.
  */
-[[nodiscard]] state_publication_request project_completed_application(
+[[nodiscard]] PKGSTATE_APPLY_API state_publication_request project_completed_application(
     const snapshot& expected_state,
     const pkgapply::lease_bound_state_projection& application_state,
     const pkgapply::installation_application_request& request,
@@ -60,7 +62,7 @@ private:
     installation_reason reason);
 
 /*! \brief Construct installation publication with exact transaction evidence. */
-[[nodiscard]] state_publication_request project_completed_application(
+[[nodiscard]] PKGSTATE_APPLY_API state_publication_request project_completed_application(
     const snapshot& expected_state,
     const pkgapply::lease_bound_state_projection& application_state,
     const pkgapply::installation_application_request& request,
@@ -73,14 +75,14 @@ private:
  * The existing installed reason is retained. Incoming source and build
  * authority are taken only from the exact request named by completed evidence.
  */
-[[nodiscard]] state_publication_request project_completed_application(
+[[nodiscard]] PKGSTATE_APPLY_API state_publication_request project_completed_application(
     const snapshot& expected_state,
     const pkgapply::lease_bound_state_projection& application_state,
     const pkgapply::upgrade_application_request& request,
     const pkgapply::completed_application_evidence& evidence);
 
 /*! \brief Construct replacement publication with exact transaction evidence. */
-[[nodiscard]] state_publication_request project_completed_application(
+[[nodiscard]] PKGSTATE_APPLY_API state_publication_request project_completed_application(
     const snapshot& expected_state,
     const pkgapply::lease_bound_state_projection& application_state,
     const pkgapply::upgrade_application_request& request,
@@ -88,14 +90,14 @@ private:
     transaction_evidence_identity transaction_evidence);
 
 /*! \brief Construct removal publication from completed native application. */
-[[nodiscard]] state_publication_request project_completed_application(
+[[nodiscard]] PKGSTATE_APPLY_API state_publication_request project_completed_application(
     const snapshot& expected_state,
     const pkgapply::lease_bound_state_projection& application_state,
     const pkgapply::removal_application_request& request,
     const pkgapply::completed_application_evidence& evidence);
 
 /*! \brief Construct removal publication with exact transaction evidence. */
-[[nodiscard]] state_publication_request project_completed_application(
+[[nodiscard]] PKGSTATE_APPLY_API state_publication_request project_completed_application(
     const snapshot& expected_state,
     const pkgapply::lease_bound_state_projection& application_state,
     const pkgapply::removal_application_request& request,

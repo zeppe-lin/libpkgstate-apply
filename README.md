@@ -20,6 +20,8 @@ meson test -C build --print-errorlogs
 
 Fallback subprojects are intentionally unsupported. Shared and static closures use separate build directories.
 
+The current upstream-generation compatibility gate is recorded in `docs/integration.md`; it must be closed before tagging 3.0.0.
+
 ## License
 
 GPL-3.0-or-later. See `COPYING` and `COPYRIGHT`.

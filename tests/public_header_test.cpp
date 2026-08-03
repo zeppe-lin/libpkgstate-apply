@@ -1,2 +1,5 @@
-#include <libpkgstate-apply/libpkgstate-apply.h>
+#ifndef LIBPKGSTATE_ADAPTER_TEST_HEADER
+#error LIBPKGSTATE_ADAPTER_TEST_HEADER is required
+#endif
+#include LIBPKGSTATE_ADAPTER_TEST_HEADER
 int main() { return 0; }

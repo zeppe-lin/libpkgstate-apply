@@ -6,6 +6,8 @@
  */
 #pragma once
 
+#include <libpkgstate-apply/export.h>
+
 #include <cstdint>
 #include <stdexcept>
 #include <string>
@@ -38,7 +40,7 @@ enum class application_state_projection_error_code : std::uint8_t {
 };
 
 /*! \brief Invalid authority universe for a lease-bound application-state read. */
-class application_state_projection_error final : public std::invalid_argument {
+class PKGSTATE_APPLY_API application_state_projection_error final : public std::invalid_argument {
 public:
   application_state_projection_error(
       application_state_projection_error_code code,
@@ -55,14 +57,14 @@ private:
  * The value owns both objects so the caller cannot accidentally pair a
  * projection with another state epoch when constructing an effect driver.
  */
-class lease_bound_application_state final {
+class PKGSTATE_APPLY_API lease_bound_application_state final {
 public:
   [[nodiscard]] const snapshot& state() const noexcept;
   [[nodiscard]] const pkgapply::lease_bound_state_projection&
   projection() const noexcept;
 
 private:
-  friend lease_bound_application_state read_application_state(
+  friend PKGSTATE_APPLY_API lease_bound_application_state read_application_state(
       const pkgapply::package_application_request&,
       const pkgapply::target_mutation_lease&,
       const canonical_store&);
@@ -86,7 +88,7 @@ private:
  * \throws application_state_projection_error when immutable authorities differ.
  * \throws store_error when the canonical store cannot be read.
  */
-[[nodiscard]] lease_bound_application_state read_application_state(
+[[nodiscard]] PKGSTATE_APPLY_API lease_bound_application_state read_application_state(
     const pkgapply::package_application_request& request,
     const pkgapply::target_mutation_lease& lease,
     const canonical_store& store);

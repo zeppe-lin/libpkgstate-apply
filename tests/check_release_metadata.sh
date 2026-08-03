@@ -17,4 +17,8 @@ grep -F "'libpkgstate-build'" "$root/meson.build" >/dev/null || fail 'missing de
 grep -F "version: '>=3.0.0'" "$root/meson.build" >/dev/null || fail 'missing floor libpkgstate-build >=3.0.0'
 grep -F "'libpkgplan'" "$root/meson.build" >/dev/null || fail 'missing dependency libpkgplan'
 grep -F "version: '>=0.3.0'" "$root/meson.build" >/dev/null || fail 'missing floor libpkgplan >=0.3.0'
+grep -F "'libpkgbuild'" "$root/meson.build" >/dev/null || fail 'missing direct dependency libpkgbuild'
+grep -F "version: '>=2.0.0'" "$root/meson.build" >/dev/null || fail 'missing floor libpkgbuild >=2.0.0'
 grep -F "'libcrypto'" "$root/meson.build" >/dev/null || fail 'missing dependency libcrypto'
+grep -F "soversion: '3'" "$root/src/meson.build" >/dev/null || fail 'SONAME generation changed'
+test -s "$root/abi/libpkgstate-apply.exports" || fail 'ABI manifest is absent'
