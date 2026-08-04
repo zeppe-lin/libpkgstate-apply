@@ -54,6 +54,7 @@ Release after the state core, state build and plan bridges, and the repository-s
 - `docs/integration.md` — composition and release order;
 - `docs/testing.md` — qualification matrix;
 - `docs/abi.md` — ABI and pkg-config policy;
+- `man/libpkgstate-apply.3.scdoc` — installed `libpkgstate-apply.3` interface manual;
 - `MAINTAINING.md` — release gate.
 
 ## License
