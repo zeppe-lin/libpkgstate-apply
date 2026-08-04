@@ -9,3 +9,4 @@
 - Reused `libpkgstate-plan` as the sole durable source-control projection into planner vocabulary.
 - Raised the application dependency to the repository-separated `libpkgapply` 3.0 generation.
 - Recorded the external `libpkgapply`/`libpkgsource-plan` generation correction required before release.
+- Removed duplicate source/build dependency edges; incoming state authority is now admitted only through `libpkgstate-build`.

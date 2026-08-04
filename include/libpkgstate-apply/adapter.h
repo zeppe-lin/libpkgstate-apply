@@ -49,8 +49,8 @@ private:
  *
  * The request itself retains the exact successful libpkgbuild result and
  * independently inspected libpkgimage authority admitted by libpkgapply.
- * This adapter projects those values through libpkgstate-source and
- * libpkgstate-build, then binds the completed filesystem evidence and the
+ * This adapter admits those values through libpkgstate-build, which derives
+ * the request-bound state source record, then binds the completed filesystem evidence and the
  * caller-selected initial installation reason. No caller-supplied build or
  * source authority is accepted separately.
  */

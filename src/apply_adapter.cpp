@@ -16,7 +16,6 @@
 #include <libpkgplan/upgrade.h>
 #include <libpkgstate-build/adapter.h>
 #include <libpkgstate-plan/adapter.h>
-#include <libpkgstate-source/adapter.h>
 #include <libpkgstate/installation_receipt.h>
 #include <libpkgstate/installed_package.h>
 #include <libpkgstate/owned_entry.h>
@@ -533,12 +532,7 @@ build_adapter::build_authority admit_incoming_build(
 {
   try
   {
-    const pkgbuild::build_request& request = incoming.build().request();
-    package_source_record source = source_adapter::project_source(
-        request.source(), request.architectures().build(),
-        request.architectures().target());
-    return build_adapter::project_build(
-        source, incoming.build(), incoming.image());
+    return build_adapter::project_build(incoming.build(), incoming.image());
   }
   catch (const std::exception& error)
   {

@@ -8,8 +8,9 @@ planner facts, acquire target leases, execute effects, or write the state
 store.
 
 The installed public API exposes only `libpkgstate` and `libpkgapply` types.
-`libpkgstate-source`, `libpkgstate-build`, `libpkgplan`, `libpkgbuild`, and
-`libcrypto` are implementation dependencies. They remain private for shared
+`libpkgstate-build`, `libpkgstate-plan`, `libpkgplan`, and `libcrypto` are
+implementation dependencies. `libpkgstate-build` owns its own source-admission
+and build-model closure; this repository does not duplicate those edges. They remain private for shared
 consumers and are retained in the static link closure.
 
 ## Release order

@@ -6,12 +6,11 @@ if get_option('tests').allowed()
     'apply_adapter_test.cpp',
     dependencies: [
       libpkgstate_apply_dep,
-      libpkgstate_source_dep,
+      libpkgstate_source_test_dep,
       libpkgstate_build_dep,
       libpkgsource_test_dep,
       libpkgimage_test_dep,
       libpkgplan_dep,
-      libpkgbuild_dep,
     ],
     cpp_args: ['-UNDEBUG'],
   )

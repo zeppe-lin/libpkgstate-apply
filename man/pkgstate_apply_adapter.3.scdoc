@@ -55,9 +55,9 @@ contains the complete successful *libpkgbuild* result, independent
 *libpkgimage* inspection, and source-derived planner candidate control admitted
 before mutation.
 
-The adapter projects the build request's sealed source through
-*libpkgstate-source* and admits the retained build result and image through
-*libpkgstate-build*. It accepts no separate caller-supplied source or build
+The adapter admits the retained build result and image through
+*libpkgstate-build*. That boundary derives the state source record from the
+exact sealed source and architecture selections retained by the build request. It accepts no separate caller-supplied source or build
 authority and never reconstructs build provenance from planner facts.
 
 Installation additionally takes one typed initial installation reason. Upgrade

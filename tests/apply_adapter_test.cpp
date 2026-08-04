@@ -300,11 +300,7 @@ incoming_authority(const char* version, std::uint8_t content)
 pkgstate::build_adapter::build_authority
 state_build_authority(const pkgapply::incoming_package_authority& incoming)
 {
-  const pkgbuild::build_request& request = incoming.build().request();
   return pkgstate::build_adapter::project_build(
-      pkgstate::source_adapter::project_source(
-          request.source(), request.architectures().build(),
-          request.architectures().target()),
       incoming.build(), incoming.image());
 }
 

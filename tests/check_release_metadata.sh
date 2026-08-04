@@ -11,16 +11,14 @@ grep -F "'libpkgstate'" "$root/meson.build" >/dev/null || fail 'missing dependen
 grep -F "version: '>=3.0.0'" "$root/meson.build" >/dev/null || fail 'missing floor libpkgstate >=3.0.0'
 grep -F "'libpkgapply'" "$root/meson.build" >/dev/null || fail 'missing dependency libpkgapply'
 grep -F "version: '>=3.0.0'" "$root/meson.build" >/dev/null || fail 'missing floor libpkgapply >=3.0.0'
-grep -F "'libpkgstate-source'" "$root/meson.build" >/dev/null || fail 'missing dependency libpkgstate-source'
-grep -F "version: '>=3.0.0'" "$root/meson.build" >/dev/null || fail 'missing floor libpkgstate-source >=3.0.0'
 grep -F "'libpkgstate-build'" "$root/meson.build" >/dev/null || fail 'missing dependency libpkgstate-build'
 grep -F "version: '>=3.0.0'" "$root/meson.build" >/dev/null || fail 'missing floor libpkgstate-build >=3.0.0'
 grep -F "'libpkgstate-plan'" "$root/meson.build" >/dev/null || fail 'missing dependency libpkgstate-plan'
 grep -F "version: '>=3.0.0'" "$root/meson.build" >/dev/null || fail 'missing floor libpkgstate-plan >=3.0.0'
 grep -F "'libpkgplan'" "$root/meson.build" >/dev/null || fail 'missing dependency libpkgplan'
 grep -F "version: '>=0.3.0'" "$root/meson.build" >/dev/null || fail 'missing floor libpkgplan >=0.3.0'
-grep -F "'libpkgbuild'" "$root/meson.build" >/dev/null || fail 'missing direct dependency libpkgbuild'
-grep -F "version: '>=2.0.0'" "$root/meson.build" >/dev/null || fail 'missing floor libpkgbuild >=2.0.0'
 grep -F "'libcrypto'" "$root/meson.build" >/dev/null || fail 'missing dependency libcrypto'
 grep -F "soversion: '3'" "$root/src/meson.build" >/dev/null || fail 'SONAME generation changed'
 test -s "$root/abi/libpkgstate-apply.exports" || fail 'ABI manifest is absent'
+if grep -F "'libpkgstate-source'" "$root/src/meson.build" >/dev/null; then fail 'production closure retains libpkgstate-source'; fi
+if grep -F "'libpkgbuild'" "$root/src/meson.build" >/dev/null; then fail 'production closure retains libpkgbuild'; fi

@@ -40,12 +40,6 @@ libpkgapply_dep = dependency(
   required: true,
   static: want_static,
 )
-libpkgstate_source_dep = dependency(
-  'libpkgstate-source',
-  version: '>=3.0.0',
-  required: true,
-  static: want_static,
-)
 libpkgstate_build_dep = dependency(
   'libpkgstate-build',
   version: '>=3.0.0',
@@ -64,12 +58,6 @@ libpkgplan_dep = dependency(
   required: true,
   static: want_static,
 )
-libpkgbuild_dep = dependency(
-  'libpkgbuild',
-  version: '>=2.0.0',
-  required: true,
-  static: want_static,
-)
 libcrypto_dep = dependency(
   'libcrypto',
   required: true,
@@ -77,6 +65,12 @@ libcrypto_dep = dependency(
 )
 libpkgsource_test_dep = dependency(
   'libpkgsource',
+  version: '>=3.0.0',
+  required: get_option('tests'),
+  static: want_static,
+)
+libpkgstate_source_test_dep = dependency(
+  'libpkgstate-source',
   version: '>=3.0.0',
   required: get_option('tests'),
   static: want_static,

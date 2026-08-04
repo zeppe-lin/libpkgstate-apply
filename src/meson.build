@@ -28,11 +28,9 @@ pkgstate_apply = library(
   dependencies: [
     libpkgstate_dep,
     libpkgapply_dep,
-    libpkgstate_source_dep,
     libpkgstate_build_dep,
     libpkgstate_plan_dep,
     libpkgplan_dep,
-    libpkgbuild_dep,
     libcrypto_dep,
   ],
   install: true,
@@ -45,11 +43,9 @@ libpkgstate_apply_consumer_deps = [
 ]
 if want_static
   libpkgstate_apply_consumer_deps += [
-    libpkgstate_source_dep,
     libpkgstate_build_dep,
     libpkgstate_plan_dep,
     libpkgplan_dep,
-    libpkgbuild_dep,
     libcrypto_dep,
   ]
 endif
@@ -76,5 +72,5 @@ pkgconf.generate(
   description: 'Completed application to installed-state publication adapter',
   subdirs: '.',
   requires: [libpkgstate_dep, libpkgapply_dep],
-  requires_private: [libpkgstate_source_dep, libpkgstate_build_dep, libpkgstate_plan_dep, libpkgplan_dep, libpkgbuild_dep, libcrypto_dep],
+  requires_private: [libpkgstate_build_dep, libpkgstate_plan_dep, libpkgplan_dep, libcrypto_dep],
 )
