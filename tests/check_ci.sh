@@ -10,7 +10,7 @@ for script in ci/configure-and-test.sh ci/build-dependencies.sh ci/qualify-insta
   [ -x "$root/$script" ] || fail "missing executable $script"
   sh -n "$root/$script" || fail "invalid shell: $script"
 done
-for token in 'GCC shared' 'GCC static' 'Clang shared' 'Clang static' 'GCC release' 'address,undefined' 'meson==1.6.1' '--wrap-mode=nofallback'; do
+for token in 'GCC shared' 'GCC static' 'Clang shared' 'Clang static' 'GCC release' 'address,undefined' 'meson==1.10.2' '--wrap-mode=nofallback'; do
   grep -F -- "$token" "$workflow" "$root/ci/configure-and-test.sh" "$root/ci/build-dependencies.sh" >/dev/null || fail "missing $token"
 done
 grep -F -- 'repository: zeppe-lin/libpkgapply' "$workflow" >/dev/null || fail 'missing dependency pin: repository: zeppe-lin/libpkgapply'

@@ -116,7 +116,7 @@ jobs:
             scdoc \
             zlib1g-dev
           python3 -m venv "$RUNNER_TEMP/meson"
-          "$RUNNER_TEMP/meson/bin/pip" install 'meson==1.6.1'
+          "$RUNNER_TEMP/meson/bin/pip" install 'meson==1.10.2'
           echo "$RUNNER_TEMP/meson/bin" >> "$GITHUB_PATH"
       - name: Build dependency closure
         run: |
@@ -227,7 +227,7 @@ jobs:
             liblzma-dev libssl-dev libxml2-dev libzstd-dev ninja-build \
             pkg-config python3-venv zlib1g-dev
           python3 -m venv "$RUNNER_TEMP/meson"
-          "$RUNNER_TEMP/meson/bin/pip" install 'meson==1.6.1'
+          "$RUNNER_TEMP/meson/bin/pip" install 'meson==1.10.2'
           echo "$RUNNER_TEMP/meson/bin" >> "$GITHUB_PATH"
       - name: Build sanitized dependency closure
         run: |
