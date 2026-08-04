@@ -40,6 +40,7 @@ enum class projection_error_code : std::uint8_t {
 class PKGSTATE_APPLY_API projection_error final : public std::invalid_argument {
 public:
   projection_error(projection_error_code code, std::string message);
+  ~projection_error() override;
   [[nodiscard]] projection_error_code code() const noexcept;
 private:
   projection_error_code code_;

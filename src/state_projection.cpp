@@ -208,6 +208,8 @@ application_state_projection_error::application_state_projection_error(
 {
 }
 
+application_state_projection_error::~application_state_projection_error() = default;
+
 application_state_projection_error_code
 application_state_projection_error::code() const noexcept
 {

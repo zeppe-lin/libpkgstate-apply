@@ -624,6 +624,8 @@ projection_error::projection_error(projection_error_code code,
     : std::invalid_argument(std::move(message)), code_(code)
 {
 }
+projection_error::~projection_error() = default;
+
 projection_error_code projection_error::code() const noexcept { return code_; }
 
 state_publication_request project_completed_application(

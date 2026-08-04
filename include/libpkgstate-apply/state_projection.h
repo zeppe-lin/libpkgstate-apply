@@ -45,6 +45,7 @@ public:
   application_state_projection_error(
       application_state_projection_error_code code,
       std::string message);
+  ~application_state_projection_error() override;
 
   [[nodiscard]] application_state_projection_error_code code() const noexcept;
 
