@@ -64,6 +64,6 @@ source-admission, build-admission, planner, build-model, and crypto edges are
 implementation-only: private for shared consumers and present in the static
 closure.
 
-The two implementation bodies and focused behavior test are byte-for-byte
-extractions from `libpkgstate` 2.5.1. Public-header normalization is limited to
-independent export annotations.
+The repository was seeded from the two 2.5.1 implementation bodies. The root
+extraction remains provenance; subsequent changes may refine this boundary
+without pretending the historical body is still current.

@@ -50,3 +50,4 @@ build_one libpkgapply
 build_one libpkgstate -Dtools=disabled
 build_one libpkgstate-source
 build_one libpkgstate-build
+build_one libpkgstate-plan

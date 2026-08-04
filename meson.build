@@ -36,7 +36,7 @@ libpkgstate_dep = dependency(
 )
 libpkgapply_dep = dependency(
   'libpkgapply',
-  version: '>=2.3.0',
+  version: '>=3.0.0',
   required: true,
   static: want_static,
 )
@@ -48,6 +48,12 @@ libpkgstate_source_dep = dependency(
 )
 libpkgstate_build_dep = dependency(
   'libpkgstate-build',
+  version: '>=3.0.0',
+  required: true,
+  static: want_static,
+)
+libpkgstate_plan_dep = dependency(
+  'libpkgstate-plan',
   version: '>=3.0.0',
   required: true,
   static: want_static,

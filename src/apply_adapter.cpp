@@ -15,6 +15,7 @@
 #include <libpkgplan/remove.h>
 #include <libpkgplan/upgrade.h>
 #include <libpkgstate-build/adapter.h>
+#include <libpkgstate-plan/adapter.h>
 #include <libpkgstate-source/adapter.h>
 #include <libpkgstate/installation_receipt.h>
 #include <libpkgstate/installed_package.h>
@@ -187,69 +188,6 @@ void validate_common(
   }
 }
 
-std::string architecture_value(
-    const std::vector<architecture_reference>& architectures)
-{
-  if (architectures.empty())
-    return "*";
-  std::string result;
-  for (const architecture_reference& architecture : architectures)
-  {
-    if (!result.empty())
-      result.push_back(',');
-    result += architecture.name();
-  }
-  return result;
-}
-
-pkgplan::removal_lifecycle_phase planner_phase(lifecycle_action action)
-{
-  switch (action)
-  {
-    case lifecycle_action::pre_remove:
-      return pkgplan::removal_lifecycle_phase::pre_remove;
-    case lifecycle_action::post_remove:
-      return pkgplan::removal_lifecycle_phase::post_remove;
-    case lifecycle_action::pre_install:
-    case lifecycle_action::post_install:
-      break;
-  }
-  throw projection_error(projection_error_code::incoming_authority_mismatch,
-                         "installation lifecycle is not planner removal control");
-}
-
-pkgplan::candidate_control_projection project_candidate_control(
-    const package_source_record& source)
-{
-  std::vector<pkgplan::runtime_dependency_declaration> dependencies;
-  for (const package_requirement& requirement : source.runtime_requirements())
-  {
-    dependencies.push_back(pkgplan::runtime_dependency_declaration::make(
-        requirement.package().name()));
-  }
-
-  std::vector<pkgplan::removal_lifecycle_declaration> lifecycle;
-  for (const lifecycle_action action : {
-           lifecycle_action::pre_remove,
-           lifecycle_action::post_remove})
-  {
-    const lifecycle_program* value = source.lifecycle(action);
-    if (value == nullptr)
-      continue;
-    lifecycle.push_back(pkgplan::removal_lifecycle_declaration::make(
-        planner_phase(action), "text/x-posix-shell",
-        value->value().material()));
-  }
-
-  std::vector<pkgplan::target_profile_fact> target_profile;
-  target_profile.push_back(pkgplan::target_profile_fact::make(
-      "pkgsource.target-architectures",
-      architecture_value(source.architectures().declared_target())));
-  return pkgplan::candidate_control_projection(
-      std::move(dependencies), std::move(lifecycle),
-      std::move(target_profile));
-}
-
 void validate_incoming_release(
     const package_source_record& source,
     const pkgplan::package_release& planned,
@@ -268,7 +206,7 @@ void validate_incoming_release(
 
   try
   {
-    if (project_candidate_control(source) != planned_control)
+    if (plan_adapter::project_candidate_control(source) != planned_control)
     {
       throw projection_error(
           projection_error_code::incoming_authority_mismatch,
@@ -278,6 +216,13 @@ void validate_incoming_release(
   catch (const projection_error&)
   {
     throw;
+  }
+  catch (const plan_adapter::projection_error& error)
+  {
+    throw projection_error(
+        projection_error_code::incoming_authority_mismatch,
+        std::string("cannot project durable source into planner control: ") +
+            error.what());
   }
   catch (const std::exception& error)
   {

@@ -6,4 +6,6 @@
 - Preserved the existing adapter behavior and SONAME generation 3.
 - Established an independent dependency closure: libpkgstate >=3.0.0; libpkgapply >=2.3.0; libpkgstate-source >=3.0.0; libpkgstate-build >=3.0.0; libpkgplan >=0.3.0; libpkgbuild >=2.0.0.
 - Added public-header, pkg-config, extraction-provenance, architecture, repository, compiler, sanitizer, shared, and static qualification.
+- Reused `libpkgstate-plan` as the sole durable source-control projection into planner vocabulary.
+- Raised the application dependency to the repository-separated `libpkgapply` 3.0 generation.
 - Recorded the external `libpkgapply`/`libpkgsource-plan` generation correction required before release.

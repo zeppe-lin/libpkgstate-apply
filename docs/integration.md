@@ -12,15 +12,10 @@ The installed public API exposes only `libpkgstate` and `libpkgapply` types.
 `libcrypto` are implementation dependencies. They remain private for shared
 consumers and are retained in the static link closure.
 
-## Release gate
+## Release order
 
-The 3.0 adapter requires the extracted source-authority generation:
-`libpkgsource` 3.0.0 and `libpkgsource-plan` 1.0.0. At the time of extraction,
-published `libpkgapply` 2.3.0 still declares `libpkgsource-plan >=2.0.0` from
-the former in-tree generation. That metadata must be corrected and a
-compatible `libpkgapply` release published before `libpkgstate-apply` 3.0.0
-can complete its cold dependency build. This repository does not patch or
-silently weaken another authority boundary.
+The adapter uses `libpkgstate-plan` for the canonical durable-source to planner
+control projection. It must not recreate that vocabulary locally.
 
-Release after `libpkgstate`, `libpkgstate-source`, and `libpkgstate-build`, and
-only after the compatible `libpkgapply` tag is available.
+Release after `libpkgstate`, `libpkgstate-source`, `libpkgstate-build`,
+`libpkgstate-plan`, and the compatible `libpkgapply` 3.0 generation.
