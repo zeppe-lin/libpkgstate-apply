@@ -43,7 +43,7 @@ if get_option('tests').allowed()
     )
   endif
   sh = find_program('sh')
-  foreach contract : ['architecture', 'release_metadata', 'repository', 'extraction', 'ci']
+  foreach contract : ['architecture', 'documentation', 'release_metadata', 'repository', 'extraction', 'ci']
     test(
       contract.replace('_', '-'),
       sh,

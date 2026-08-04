@@ -10,3 +10,5 @@ test "$(grep -c '^## 3.0.0' "$root/HISTORY.md")" -eq 1 || fail '3.0.0 history he
 for file in tests/check_style.sh ci/lint-manpage.sh ci/build-dependencies.sh ci/audit-shared-boundary.sh; do [ -x "$root/$file" ] || fail "missing executable $file"; done
 
 [ ! -e "$root/man/pkgstate_apply_adapter.3.scdoc" ] || fail "obsolete in-tree manual retained: pkgstate_apply_adapter.3.scdoc"
+
+test -x "$root/tools/check-public-documentation.py" || fail 'public documentation checker is absent'
