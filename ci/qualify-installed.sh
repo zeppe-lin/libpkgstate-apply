@@ -15,13 +15,7 @@ tmp=$(mktemp -d)
 trap 'rm -rf "$tmp"' EXIT HUP INT TERM
 flags=$(pkg-config --cflags --libs libpkgstate-apply)
 [ "$link_mode" = shared ] || flags=$(pkg-config --static --cflags --libs libpkgstate-apply)
-documentation_dir="$install_prefix/share/doc/libpkgstate-apply"
-for document in README.md HISTORY.md CONTRIBUTING.md MAINTAINING.md architecture.md integration.md testing.md abi.md code-style.md; do
-  test -s "$documentation_dir/$document" || {
-    echo "installed documentation is absent: $document" >&2
-    exit 1
-  }
-done
+python3 ci/qualify-installed-documentation.py "$install_prefix" libpkgstate-apply
 case $link_mode in
   shared) if printf '%s\n' "$flags" | grep -F -- '-lpkgstate-source' >/dev/null; then echo 'private link edge leaked into shared consumer flags: -lpkgstate-source' >&2; exit 1; fi ;;
   static) printf '%s\n' "$flags" | grep -F -- '-lpkgstate-source' >/dev/null || { echo 'static link closure omits -lpkgstate-source' >&2; exit 1; } ;;

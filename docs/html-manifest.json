@@ -1,0 +1,70 @@
+{
+  "project": "libpkgstate-apply",
+  "documents": [
+    {
+      "source": "README.md",
+      "output": "index.html",
+      "title": "libpkgstate-apply"
+    },
+    {
+      "source": "CONTRIBUTING.md",
+      "output": "contributing.html",
+      "title": "Contributing"
+    },
+    {
+      "source": "HISTORY.md",
+      "output": "history.html",
+      "title": "History"
+    },
+    {
+      "source": "MAINTAINING.md",
+      "output": "maintaining.html",
+      "title": "Maintaining libpkgstate-apply"
+    },
+    {
+      "source": "docs/abi.md",
+      "output": "abi.html",
+      "title": "ABI policy"
+    },
+    {
+      "source": "docs/architecture.md",
+      "output": "architecture.html",
+      "title": "Architecture"
+    },
+    {
+      "source": "docs/code-style.md",
+      "output": "code-style.html",
+      "title": "Code style"
+    },
+    {
+      "source": "docs/history/3.0-extraction.md",
+      "output": "history/3.0-extraction.html",
+      "title": "3.0 extraction"
+    },
+    {
+      "source": "docs/html.md",
+      "output": "html-documentation.html",
+      "title": "HTML documentation"
+    },
+    {
+      "source": "docs/integration.md",
+      "output": "integration.html",
+      "title": "Integration"
+    },
+    {
+      "source": "docs/man/libpkgstate-apply.3.md",
+      "output": "manual/libpkgstate-apply.3.html",
+      "title": "LIBPKGSTATE-APPLY(3) libpkgstate-apply"
+    },
+    {
+      "source": "docs/manpage-markdown.md",
+      "output": "manpage-markdown.html",
+      "title": "Manual-page Markdown"
+    },
+    {
+      "source": "docs/testing.md",
+      "output": "testing.html",
+      "title": "Testing"
+    }
+  ]
+}

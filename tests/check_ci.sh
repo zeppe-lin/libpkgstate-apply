@@ -24,3 +24,8 @@ grep -F 'libpkgstate-plan.so.2' "$root/ci/audit-shared-boundary.sh" >/dev/null |
 if grep -F 'missing libpkgstate-source.so.1' "$root/ci/audit-shared-boundary.sh" >/dev/null; then fail 'shared audit still requires test-only source adapter'; fi
 if grep -F 'missing libpkgbuild.so.3' "$root/ci/audit-shared-boundary.sh" >/dev/null; then fail 'shared audit still requires transitive build owner'; fi
 grep -F 'libpkgapply-posix' "$root/ci/audit-shared-boundary.sh" >/dev/null || fail 'shared audit does not forbid mechanism-provider coupling'
+
+grep -F 'html: enabled' "$root/.github/workflows/ci.yml" >/dev/null || fail 'GCC shared HTML build is absent'
+grep -F 'pandoc' "$root/.github/workflows/ci.yml" >/dev/null || fail 'Pandoc qualification dependency is absent'
+grep -F -- '-Dhtml_docs=' "$root/.github/workflows/ci.yml" >/dev/null || fail 'HTML Meson feature is not configured'
+grep -F 'qualify-html-docs.sh' "$root/.github/workflows/ci.yml" >/dev/null || fail 'installed HTML qualification is absent'
