@@ -19,3 +19,8 @@ grep -F -- 'repository: zeppe-lin/libpkgstate-build' "$workflow" >/dev/null || f
 grep -F -- 'repository: zeppe-lin/libpkgsource-plan' "$workflow" >/dev/null || fail 'missing dependency pin: repository: zeppe-lin/libpkgsource-plan'
 grep -F -- 'ref: v1.0.0' "$workflow" >/dev/null || fail 'missing dependency pin: ref: v1.0.0'
 grep -F -- 'repository: zeppe-lin/libpkgstate-plan' "$workflow" >/dev/null || fail 'missing dependency pin: repository: zeppe-lin/libpkgstate-plan'
+grep -F 'libpkgstate-build.so.1' "$root/ci/audit-shared-boundary.sh" >/dev/null || fail 'shared audit omits state-build authority'
+grep -F 'libpkgstate-plan.so.2' "$root/ci/audit-shared-boundary.sh" >/dev/null || fail 'shared audit omits state-plan translation'
+if grep -F 'missing libpkgstate-source.so.1' "$root/ci/audit-shared-boundary.sh" >/dev/null; then fail 'shared audit still requires test-only source adapter'; fi
+if grep -F 'missing libpkgbuild.so.3' "$root/ci/audit-shared-boundary.sh" >/dev/null; then fail 'shared audit still requires transitive build owner'; fi
+grep -F 'libpkgapply-posix' "$root/ci/audit-shared-boundary.sh" >/dev/null || fail 'shared audit does not forbid mechanism-provider coupling'

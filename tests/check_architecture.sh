@@ -10,3 +10,6 @@ if grep -F "'libpkgbuild'" "$root/meson.build" "$root/src/meson.build" >/dev/nul
 grep -F "'libpkgstate-plan'" "$root/meson.build" >/dev/null || fail 'state-to-planner translation edge is not declared'
 grep -F 'plan_adapter::project_candidate_control' "$root/src/apply_adapter.cpp" >/dev/null || fail 'durable candidate control is recreated locally'
 if grep -F 'source_adapter::project_source' "$root/src/apply_adapter.cpp" >/dev/null; then fail 'source admission is duplicated outside libpkgstate-build'; fi
+if grep -R -E 'libpkgapply-posix|pkgapply::posix' "$root/include" "$root/src" "$root/meson.build" >/dev/null; then fail 'application mechanism provider contaminated semantic state admission'; fi
+grep -F 'It does not depend on' "$root/docs/architecture.md" >/dev/null || fail 'mechanism non-dependency is undocumented'
+grep -F '`libpkgapply-posix`' "$root/docs/architecture.md" >/dev/null || fail 'mechanism provider name is undocumented'

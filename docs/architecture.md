@@ -67,3 +67,7 @@ closure. Source admission and build-model closure are owned transitively by
 The repository was seeded from the two 2.5.1 implementation bodies. The root
 extraction remains provenance; subsequent changes may refine this boundary
 without pretending the historical body is still current.
+
+The adapter consumes only semantic `libpkgapply` evidence. It does not depend on
+`libpkgapply-posix` or any other application mechanism provider; filesystem
+mechanics are complete before this translation begins.
