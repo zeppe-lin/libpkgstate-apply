@@ -58,6 +58,14 @@ A successful call returns a `state_publication_request`. Compare-and-publish,
 storage encoding, generation creation, and publication receipts remain owned by
 `libpkgstate`.
 
+## Failure translation
+
+The boundary translates only typed bridge failures and `libpkgstate` owner
+refusals. Planner, application, allocation, logic, and unrelated runtime
+failures are not laundered through a generic `std::exception` catch. A
+`projection_error` therefore means authority disagreement or native publication
+refusal, not arbitrary process failure.
+
 ## Dependency placement
 
 Installed declarations expose only `libpkgstate` and `libpkgapply` types.

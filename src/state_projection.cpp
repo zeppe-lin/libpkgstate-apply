@@ -7,7 +7,6 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
-#include <exception>
 #include <memory>
 #include <string>
 #include <string_view>
@@ -35,7 +34,7 @@ Destination translate_identity(const Source& source)
   {
     return Destination::parse(source.string());
   }
-  catch (const std::exception& error)
+  catch (const pkgapply::digest_error& error)
   {
     throw application_state_projection_error(
         application_state_projection_error_code::identity_translation,
@@ -50,7 +49,7 @@ package_path translate_path(const pkgplan::package_path& source)
   {
     return package_path::parse(source.string());
   }
-  catch (const std::exception& error)
+  catch (const path_error& error)
   {
     throw application_state_projection_error(
         application_state_projection_error_code::path_translation,

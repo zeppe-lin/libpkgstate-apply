@@ -13,3 +13,4 @@ if grep -F 'source_adapter::project_source' "$root/src/apply_adapter.cpp" >/dev/
 if grep -R -E 'libpkgapply-posix|pkgapply::posix' "$root/include" "$root/src" "$root/meson.build" >/dev/null; then fail 'application mechanism provider contaminated semantic state admission'; fi
 grep -F 'It does not depend on' "$root/docs/architecture.md" >/dev/null || fail 'mechanism non-dependency is undocumented'
 grep -F '`libpkgapply-posix`' "$root/docs/architecture.md" >/dev/null || fail 'mechanism provider name is undocumented'
+if grep -R -F 'catch (const std::exception' "$root/src" >/dev/null; then fail 'adapter launders unrelated process failures through std::exception'; fi

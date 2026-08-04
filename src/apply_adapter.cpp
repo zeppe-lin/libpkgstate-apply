@@ -31,12 +31,12 @@ Destination translate_identity(const Source& source)
   {
     return Destination::parse(source.string());
   }
-  catch (const std::exception& error)
+  catch (const identity_error& failure)
   {
     throw projection_error(
         projection_error_code::identity_translation,
         std::string("state identity vocabulary rejected external identity: ") +
-            error.what());
+            failure.what());
   }
 }
 
@@ -46,12 +46,12 @@ package_path translate_path(const pkgplan::package_path& source)
   {
     return package_path::parse(source.string());
   }
-  catch (const std::exception& error)
+  catch (const path_error& failure)
   {
     throw projection_error(
         projection_error_code::path_translation,
         std::string("state path vocabulary rejected application path: ") +
-            error.what());
+            failure.what());
   }
 }
 
@@ -216,19 +216,12 @@ void validate_incoming_release(
   {
     throw;
   }
-  catch (const plan_adapter::projection_error& error)
+  catch (const plan_adapter::projection_error& failure)
   {
     throw projection_error(
         projection_error_code::incoming_authority_mismatch,
         std::string("cannot project durable source into planner control: ") +
-            error.what());
-  }
-  catch (const std::exception& error)
-  {
-    throw projection_error(
-        projection_error_code::incoming_authority_mismatch,
-        std::string("cannot compare sealed source with planner control: ") +
-            error.what());
+            failure.what());
   }
 }
 
@@ -518,12 +511,12 @@ installed_package construct_installed_package(
         std::move(transaction_evidence));
     return installed_package::make(std::move(receipt));
   }
-  catch (const std::exception& error)
+  catch (const error& failure)
   {
     throw projection_error(
         projection_error_code::publication_construction,
         std::string("state rejected resulting installation receipt: ") +
-            error.what());
+            failure.what());
   }
 }
 
@@ -534,12 +527,12 @@ build_adapter::build_authority admit_incoming_build(
   {
     return build_adapter::project_build(incoming.build(), incoming.image());
   }
-  catch (const std::exception& error)
+  catch (const build_adapter::projection_error& failure)
   {
     throw projection_error(
         projection_error_code::incoming_authority_mismatch,
         std::string("cannot admit request-bound source/build authority: ") +
-            error.what());
+            failure.what());
   }
 }
 
@@ -646,12 +639,12 @@ state_publication_request project_completed_application(
   {
     throw;
   }
-  catch (const std::exception& error)
+  catch (const error& failure)
   {
     throw projection_error(
         projection_error_code::publication_construction,
         std::string("state rejected installation publication projection: ") +
-            error.what());
+            failure.what());
   }
 }
 
@@ -675,12 +668,12 @@ state_publication_request project_completed_application(
   {
     throw;
   }
-  catch (const std::exception& error)
+  catch (const error& failure)
   {
     throw projection_error(
         projection_error_code::publication_construction,
         std::string("state rejected installation publication projection: ") +
-            error.what());
+            failure.what());
   }
 }
 
@@ -701,12 +694,12 @@ state_publication_request project_completed_application(
   {
     throw;
   }
-  catch (const std::exception& error)
+  catch (const error& failure)
   {
     throw projection_error(
         projection_error_code::publication_construction,
         std::string("state rejected upgrade publication projection: ") +
-            error.what());
+            failure.what());
   }
 }
 
@@ -728,12 +721,12 @@ state_publication_request project_completed_application(
   {
     throw;
   }
-  catch (const std::exception& error)
+  catch (const error& failure)
   {
     throw projection_error(
         projection_error_code::publication_construction,
         std::string("state rejected upgrade publication projection: ") +
-            error.what());
+            failure.what());
   }
 }
 
@@ -754,12 +747,12 @@ state_publication_request project_completed_application(
   {
     throw;
   }
-  catch (const std::exception& error)
+  catch (const error& failure)
   {
     throw projection_error(
         projection_error_code::publication_construction,
         std::string("state rejected removal publication projection: ") +
-            error.what());
+            failure.what());
   }
 }
 
@@ -781,12 +774,12 @@ state_publication_request project_completed_application(
   {
     throw;
   }
-  catch (const std::exception& error)
+  catch (const error& failure)
   {
     throw projection_error(
         projection_error_code::publication_construction,
         std::string("state rejected removal publication projection: ") +
-            error.what());
+            failure.what());
   }
 }
 
