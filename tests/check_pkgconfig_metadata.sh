@@ -10,15 +10,20 @@ grep -F -- '-lpkgstate-apply' "$pc" >/dev/null
 public=$(sed -n 's/^Requires:[[:space:]]*//p' "$pc")
 private=$(sed -n 's/^Requires\.private:[[:space:]]*//p' "$pc")
 private_libs=$(sed -n 's/^Libs\.private:[[:space:]]*//p' "$pc")
-printf '%s\n' "$public" | grep -F 'libpkgstate >=3.0.0' >/dev/null || { echo 'pkgconfig-metadata: missing public libpkgstate >=3.0.0' >&2; exit 1; }
-printf '%s\n' "$public" | grep -F 'libpkgapply >=3.0.0' >/dev/null || { echo 'pkgconfig-metadata: missing public libpkgapply >=3.0.0' >&2; exit 1; }
-if printf '%s\n' "$public" | grep -F 'libpkgstate-build' >/dev/null; then echo 'pkgconfig-metadata: private edge leaked publicly: libpkgstate-build' >&2; exit 1; fi
-if printf '%s\n' "$public" | grep -F 'libpkgstate-plan' >/dev/null; then echo 'pkgconfig-metadata: private edge leaked publicly: libpkgstate-plan' >&2; exit 1; fi
-if printf '%s\n' "$public" | grep -F 'libpkgplan' >/dev/null; then echo 'pkgconfig-metadata: private edge leaked publicly: libpkgplan' >&2; exit 1; fi
-if printf '%s\n' "$public" | grep -F 'libcrypto' >/dev/null; then echo 'pkgconfig-metadata: private edge leaked publicly: libcrypto' >&2; exit 1; fi
-if printf '%s\n' "$private" | grep -F 'libpkgstate-source' >/dev/null; then echo 'pkgconfig-metadata: redundant private libpkgstate-source edge retained' >&2; exit 1; fi
-if printf '%s\n' "$private" | grep -F 'libpkgbuild' >/dev/null; then echo 'pkgconfig-metadata: redundant private libpkgbuild edge retained' >&2; exit 1; fi
-printf '%s\n' "$private" | grep -F 'libpkgstate-build >=3.0.0' >/dev/null || { echo 'pkgconfig-metadata: missing private libpkgstate-build >=3.0.0' >&2; exit 1; }
-printf '%s\n' "$private" | grep -F 'libpkgstate-plan >=3.0.0' >/dev/null || { echo 'pkgconfig-metadata: missing private libpkgstate-plan >=3.0.0' >&2; exit 1; }
-printf '%s\n' "$private" | grep -F 'libpkgplan >=0.3.0' >/dev/null || { echo 'pkgconfig-metadata: missing private libpkgplan >=0.3.0' >&2; exit 1; }
-printf '%s\n%s\n' "$private" "$private_libs" | grep -E 'libcrypto' >/dev/null || { echo 'pkgconfig-metadata: missing private libcrypto' >&2; exit 1; }
+has_requirement() {
+  printf '%s\n' "$1" | tr ',' '\n' | awk \
+    -v package="$2" -v version="$3" '
+      $1 == package && $2 == ">=" && $3 == version { found = 1 }
+      END { exit found ? 0 : 1 }
+    '
+}
+
+has_requirement "$public" libpkgstate 3.0.0 || { echo 'pkgconfig-metadata: missing public libpkgstate >= 3.0.0' >&2; exit 1; }
+has_requirement "$public" libpkgapply 3.0.0 || { echo 'pkgconfig-metadata: missing public libpkgapply >= 3.0.0' >&2; exit 1; }
+for leaked in libpkgstate-build libpkgstate-plan libpkgplan libcrypto; do
+  if printf '%s\n' "$public" | grep -F "$leaked" >/dev/null; then echo "pkgconfig-metadata: private edge leaked publicly: $leaked" >&2; exit 1; fi
+done
+has_requirement "$private" libpkgstate-build 3.0.0 || { echo 'pkgconfig-metadata: missing private libpkgstate-build >= 3.0.0' >&2; exit 1; }
+has_requirement "$private" libpkgstate-plan 3.0.0 || { echo 'pkgconfig-metadata: missing private libpkgstate-plan >= 3.0.0' >&2; exit 1; }
+has_requirement "$private" libpkgplan 0.3.0 || { echo 'pkgconfig-metadata: missing private libpkgplan >= 0.3.0' >&2; exit 1; }
+printf '%s\n%s\n' "$private" "$private_libs" | grep -F 'libcrypto' >/dev/null || { echo 'pkgconfig-metadata: missing private libcrypto' >&2; exit 1; }

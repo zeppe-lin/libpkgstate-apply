@@ -71,6 +71,14 @@ pkgconf.generate(
   filebase: 'libpkgstate-apply',
   description: 'Completed application to installed-state publication adapter',
   subdirs: '.',
-  requires: [libpkgstate_dep, libpkgapply_dep],
-  requires_private: [libpkgstate_build_dep, libpkgstate_plan_dep, libpkgplan_dep, libcrypto_dep],
+  requires: [
+    'libpkgstate >= 3.0.0',
+    'libpkgapply >= 3.0.0',
+  ],
+  requires_private: [
+    'libpkgstate-build >= 3.0.0',
+    'libpkgstate-plan >= 3.0.0',
+    'libpkgplan >= 0.3.0',
+    libcrypto_dep,
+  ],
 )
