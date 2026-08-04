@@ -3,10 +3,12 @@
 ## 3.0.0 (2026-08-04)
 
 - Extracted `libpkgstate-apply` from the `libpkgstate` 2.5.1 repository.
-- Preserved the existing adapter behavior and SONAME generation 3.
-- Established an independent dependency closure: libpkgstate >=3.0.0; libpkgapply >=2.3.0; libpkgstate-source >=3.0.0; libpkgstate-build >=3.0.0; libpkgplan >=0.3.0; libpkgbuild >=2.0.0.
+- Preserved the extracted behavior as repository provenance and retained SONAME generation 3.
+- Established a public closure of `libpkgstate >=3.0.0` and
+  `libpkgapply >=3.0.0`, with state-build, state-plan, planner, and crypto edges
+  private to the implementation and static closure.
 - Added public-header, pkg-config, extraction-provenance, architecture, repository, compiler, sanitizer, shared, and static qualification.
 - Reused `libpkgstate-plan` as the sole durable source-control projection into planner vocabulary.
 - Raised the application dependency to the repository-separated `libpkgapply` 3.0 generation.
-- Recorded the external `libpkgapply`/`libpkgsource-plan` generation correction required before release.
+- Bound the adapter to the corrected repository-separated `libpkgapply` 3.0 dependency graph.
 - Removed duplicate source/build dependency edges; incoming state authority is now admitted only through `libpkgstate-build`.
