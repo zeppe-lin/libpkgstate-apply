@@ -58,7 +58,10 @@ public:
   /*! \brief Destroy the polymorphic state-projection failure. */
   ~application_state_projection_error() override;
 
-  /*! \brief Return the stable refusal category. */
+  /*!
+   * \brief Return the stable refusal category.
+  *  \return The stable refusal category.
+   */
   [[nodiscard]] application_state_projection_error_code code() const noexcept;
 
 private:
@@ -73,9 +76,15 @@ private:
  */
 class PKGSTATE_APPLY_API lease_bound_application_state final {
 public:
-  /*! \brief Return the exact canonical snapshot read under the lease. */
+  /*!
+   * \brief Return the exact canonical snapshot read under the lease.
+  *  \return The exact canonical snapshot read under the lease.
+   */
   [[nodiscard]] const snapshot& state() const noexcept;
-  /*! \brief Return the matching application-owned path-owner projection. */
+  /*!
+   * \brief Return the matching application-owned path-owner projection.
+  *  \return The matching application-owned path-owner projection.
+   */
   [[nodiscard]] const pkgapply::lease_bound_state_projection&
   projection() const noexcept;
 

@@ -12,6 +12,11 @@ for file in \
 done
 python3 "$root/tools/check-public-documentation.py" \
   "$root" libpkgstate-apply libpkgstate-apply.h
+if command -v clang++ >/dev/null 2>&1; then
+  python3 "$root/tools/check-doxygen-contract.py" \
+    --root "$root" --include-subdir libpkgstate-apply \
+    --namespace pkgstate --clang "$(command -v clang++)"
+fi
 
 python3 "$root/tools/check-man-markdown.py" \
   --root "$root" --project libpkgstate-apply --version 3.0.0

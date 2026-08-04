@@ -53,7 +53,10 @@ public:
   /*! \brief Destroy the polymorphic projection failure. */
   ~projection_error() override;
 
-  /*! \brief Return the stable refusal category. */
+  /*!
+   * \brief Return the stable refusal category.
+  *  \return The stable refusal category.
+   */
   [[nodiscard]] projection_error_code code() const noexcept;
 
 private:

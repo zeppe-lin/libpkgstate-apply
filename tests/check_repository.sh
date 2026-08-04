@@ -12,6 +12,7 @@ for file in tests/check_style.sh ci/lint-manpage.sh ci/build-dependencies.sh ci/
 [ ! -e "$root/man/pkgstate_apply_adapter.3.scdoc" ] || fail "obsolete in-tree manual retained: pkgstate_apply_adapter.3.scdoc"
 
 test -x "$root/tools/check-public-documentation.py" || fail 'public documentation checker is absent'
+test -x "$root/tools/check-doxygen-contract.py" || fail 'Doxygen contract checker is absent'
 
 for tool in \
   build-html-docs.py check-html-docs.py install-html-docs.py \
