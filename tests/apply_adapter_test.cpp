@@ -98,7 +98,7 @@ source_snapshot(const char* version,
 {
   using namespace pkgsource;
   return seal_source(
-      source_origin("recipe.yml"), source_syntax::recipe_yaml_v1,
+      source_origin("recipe.yml"),
       recipe_declaration(
           package_release(package_reference("tool"), version, 1),
           package_metadata("Tool", std::nullopt, std::nullopt,

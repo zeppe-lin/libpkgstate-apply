@@ -14,3 +14,4 @@
 - Raised the application dependency to the repository-separated `libpkgapply` 3.0 generation.
 - Bound the adapter to the corrected repository-separated `libpkgapply` 3.0 dependency graph.
 - Removed duplicate source/build dependency edges; incoming state authority is now admitted only through `libpkgstate-build`.
+- Updated source-authority fixtures to the syntax-neutral `libpkgsource` 3.0 sealing contract.
