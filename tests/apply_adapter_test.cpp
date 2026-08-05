@@ -14,6 +14,10 @@
 #include <vector>
 
 #include <libpkgapply/incoming_package.h>
+#include <libpkgbuild-image/libpkgbuild-image.h>
+#include <libpkgbuild-plan/libpkgbuild-plan.h>
+#include <libpkgcatalog/libpkgcatalog.h>
+#include <libpkgresolve/libpkgresolve.h>
 #include <libpkgapply/object_fact.h>
 #include <libpkgapply/path_consequence.h>
 #include <libpkgapply/request.h>
@@ -147,7 +151,6 @@ state_package(const pkgstate::state_target_binding& target,
       pkgstate::build_provenance(
           source.identity(),
           state_identity<pkgstate::build_request_identity>(90),
-          state_identity<pkgstate::source_material_set_identity>(91),
           state_identity<pkgstate::build_input_set_identity>(92),
           state_identity<pkgstate::environment_policy_identity>(93),
           state_identity<pkgstate::build_policy_identity>(94),
@@ -157,8 +160,9 @@ state_package(const pkgstate::state_target_binding& target,
           state_identity<pkgstate::artifact_content_identity>(98),
           state_identity<pkgstate::artifact_binding_identity>(99),
           state_identity<pkgstate::execution_evidence_identity>(100),
-          state_identity<pkgstate::artifact_image_identity>(101),
-          state_identity<pkgstate::artifact_inspection_identity>(102)));
+          state_identity<pkgstate::build_image_identity>(101),
+          state_identity<pkgstate::artifact_image_identity>(102),
+          state_identity<pkgstate::artifact_inspection_identity>(103)));
   return pkgstate::installed_package::make(
       pkgstate::installation_receipt::make(
           std::move(control), target, std::move(manifest),
@@ -268,13 +272,90 @@ byte_digest(std::uint8_t byte)
   return result;
 }
 
+pkgsource::source_snapshot
+dependency_snapshot(const char* name)
+{
+  using namespace pkgsource;
+  return seal_source(
+      source_origin(std::string(name) + "/recipe.yml"),
+      recipe_declaration(
+          package_release(package_reference(name), "1.0", 1),
+          package_metadata(name, std::nullopt, std::nullopt,
+                           {"GPL-3.0-or-later"}),
+          {},
+          program(program_language::posix_shell, "install -d \"$PKG\"\n"),
+          {}, {},
+          architecture_requirements(
+              {architecture_reference("x86_64")},
+              {architecture_reference("x86_64")}),
+          declaration_provenance("recipe.yml", "$", 1, 1)),
+      profile_catalog::seal({}));
+}
+
+pkgresolve::resolution_result
+resolution(const char* version)
+{
+  auto profiles = pkgsource::profile_catalog::seal({});
+  std::vector<pkgsource::source_snapshot> sources;
+  sources.push_back(source_snapshot(version));
+  sources.push_back(dependency_snapshot("libc"));
+  pkgcatalog::collection_declaration declaration(
+      pkgcatalog::collection_reference("core"),
+      pkgcatalog::collection_provenance(
+          "/collections/core", std::nullopt,
+          pkgsource::declaration_provenance(
+              "catalog.yml", "collections[0]", 1, 1)),
+      std::move(sources));
+  std::vector<pkgcatalog::catalog_collection> collections;
+  collections.emplace_back(
+      0, pkgcatalog::seal_collection(std::move(declaration)));
+  auto catalog = pkgcatalog::catalog_snapshot::seal(
+      std::move(profiles), std::move(collections));
+
+  std::vector<pkgresolve::resolution_goal> goals;
+  goals.emplace_back(
+      pkgsource::requirement_scope::build(),
+      pkgsource::requirement_subject(pkgsource::package_reference("tool")),
+      "build-tool");
+  goals.emplace_back(
+      pkgsource::requirement_scope::check(),
+      pkgsource::requirement_subject(pkgsource::package_reference("tool")),
+      "check-tool");
+  return pkgresolve::resolve(pkgresolve::resolution_request::seal(
+      std::move(catalog), pkgstate::snapshot::make(state_target(40)),
+      pkgresolve::architecture_context(
+          pkgsource::architecture_reference("x86_64"),
+          pkgsource::architecture_reference("x86_64")),
+      std::move(goals), pkgresolve::resolution_policy()));
+}
+
+const pkgresolve::selected_package&
+resolved_subject(const pkgresolve::resolution_result& resolved)
+{
+  for (const auto& selection : resolved.selections())
+  {
+    if (selection.environment() == pkgresolve::resolution_environment::target &&
+        selection.package().name() == "tool")
+      return selection;
+  }
+  throw std::runtime_error("fixture resolution lacks tool subject");
+}
+
+std::string
+sha256_hex(const std::string& value)
+{
+  constexpr std::string_view prefix = "v1:sha256:";
+  if (value.compare(0, prefix.size(), prefix) != 0)
+    throw std::invalid_argument("fixture digest is not canonical SHA-256");
+  return value.substr(prefix.size());
+}
+
 pkgapply::incoming_package_authority
 incoming_authority(const char* version, std::uint8_t content)
 {
-  const pkgsource::source_snapshot source = source_snapshot(version);
+  auto resolved = resolution(version);
   const pkgbuild::build_request request = pkgbuild::build_request::seal(
-      source, {}, {}, pkgsource::architecture_reference("x86_64"),
-      pkgsource::architecture_reference("x86_64"),
+      resolved, resolved_subject(resolved).identity(),
       pkgbuild::build_policy::make(
           pkgbuild::environment_policy::hermetic(1, 0022, 1700000000)));
   const pkgbuild::payload_manifest payload = pkgbuild::payload_manifest::seal({
@@ -285,23 +366,24 @@ incoming_authority(const char* version, std::uint8_t content)
   });
   pkgimage::inspected_package_image image = incoming_image(content);
   const pkgbuild::sealed_artifact artifact = pkgbuild::sealed_artifact::make(
-      pkgbuild::artifact_encoding::package_tar_v1,
+      pkgbuild::artifact_encoding::package_tar,
       pkgbuild::artifact_compression::none, 4,
       pkgbuild::sha256_digest(
-          byte_digest(static_cast<std::uint8_t>(content + 30))));
+          sha256_hex(image.receipt().archive_digest().string())));
   pkgbuild::build_result result = pkgbuild::build_result::succeeded(
       request, payload, artifact,
       pkgbuild::execution_evidence_identity::from_sha256(
           byte_digest(static_cast<std::uint8_t>(content + 60))));
-  return pkgapply::incoming_package_authority::admit(
+  auto admitted = pkgbuild::image_adapter::build_image_authority::admit(
       std::move(result), std::move(image));
+  return pkgapply::incoming_package_authority::admit(
+      pkgbuild::plan_adapter::project_artifact(admitted));
 }
 
 pkgstate::build_adapter::build_authority
 state_build_authority(const pkgapply::incoming_package_authority& incoming)
 {
-  return pkgstate::build_adapter::project_build(
-      incoming.build(), incoming.image());
+  return pkgstate::build_adapter::project_build(incoming.authority());
 }
 
 pkgplan::package_policy_snapshot
@@ -332,15 +414,11 @@ installation_plan(const pkgstate::snapshot& expected,
                   const pkgapply::incoming_package_authority& incoming)
 {
   const pkgplan::package_path path = pkgplan::package_path::parse("tool");
-  const pkgplan::package_release& release = incoming.candidate().release();
   const auto archive = incoming.image().receipt().archive_digest();
 
   pkgplan::installation_request request(
       incoming.candidate(),
-      pkgplan::artifact_package_fact(
-          translate_identity<pkgplan::artifact_identity>(archive),
-          plan_identity<pkgplan::artifact_manifest_identity>(73),
-          release),
+      incoming.artifact(),
       archive,
       incoming.image(),
       translate_identity<pkgplan::installed_state_snapshot_identity>(
@@ -416,16 +494,12 @@ upgrade_plan(const pkgstate::snapshot& expected,
                  control_override = std::nullopt)
 {
   const pkgplan::package_path path = pkgplan::package_path::parse("tool");
-  const pkgplan::package_release& release = incoming.candidate().release();
   const auto archive = incoming.image().receipt().archive_digest();
 
   pkgplan::upgrade_request request(
       planner_installed(expected, installed, control_override),
       incoming.candidate(),
-      pkgplan::artifact_package_fact(
-          translate_identity<pkgplan::artifact_identity>(archive),
-          plan_identity<pkgplan::artifact_manifest_identity>(77),
-          release),
+      incoming.artifact(),
       archive,
       incoming.image(),
       translate_identity<pkgplan::installed_state_snapshot_identity>(

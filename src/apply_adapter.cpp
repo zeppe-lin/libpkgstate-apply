@@ -525,7 +525,7 @@ build_adapter::build_authority admit_incoming_build(
 {
   try
   {
-    return build_adapter::project_build(incoming.build(), incoming.image());
+    return build_adapter::project_build(incoming.authority());
   }
   catch (const build_adapter::projection_error& failure)
   {

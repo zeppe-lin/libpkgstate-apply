@@ -9,9 +9,11 @@ store.
 
 The installed public API exposes only `libpkgstate` and `libpkgapply` types.
 `libpkgstate-build`, `libpkgstate-plan`, `libpkgplan`, and `libcrypto` are
-implementation dependencies. `libpkgstate-build` owns its own source-admission
-and build-model closure; this repository does not duplicate those edges. They remain private for shared
-consumers and are retained in the static link closure.
+implementation dependencies. `libpkgstate-build` consumes the exact
+`libpkgbuild-image` admission already retained by the application request and
+owns the transitive source/build/image closure. This repository does not
+redeclare or repeat those edges. They remain private for shared consumers and
+are retained in the static link closure.
 
 ## Release order
 

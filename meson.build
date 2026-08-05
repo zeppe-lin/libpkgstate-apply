@@ -82,6 +82,30 @@ libpkgimage_test_dep = dependency(
   static: want_static,
 )
 
+libpkgbuild_image_test_dep = dependency(
+  'libpkgbuild-image',
+  version: ['>=1.0.0', '<2.0.0'],
+  required: get_option('tests'),
+  static: want_static,
+)
+libpkgbuild_plan_test_dep = dependency(
+  'libpkgbuild-plan',
+  version: ['>=1.0.0', '<2.0.0'],
+  required: get_option('tests'),
+  static: want_static,
+)
+libpkgcatalog_test_dep = dependency(
+  'libpkgcatalog',
+  version: ['>=3.0.0', '<4.0.0'],
+  required: get_option('tests'),
+  static: want_static,
+)
+libpkgresolve_test_dep = dependency(
+  'libpkgresolve',
+  version: ['>=2.0.0', '<3.0.0'],
+  required: get_option('tests'),
+  static: want_static,
+)
 subdir('src')
 subdir('docs')
 subdir('man')

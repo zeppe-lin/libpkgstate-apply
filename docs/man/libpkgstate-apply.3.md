@@ -54,14 +54,16 @@ publish state, reconcile, or repair.
 # INCOMING AUTHORITY
 
 Installation and upgrade requests retain an **incoming_package_authority** that
-contains the complete successful **libpkgbuild** result, independent
-**libpkgimage** inspection, and source-derived planner candidate control admitted
-before mutation.
+contains one complete **libpkgbuild-plan** projection. That projection retains the
+exact **libpkgbuild-image** admission together with source-derived candidate and
+artifact facts established before mutation.
 
-The adapter admits the retained build result and image through
-**libpkgstate-build**. That boundary derives the state source record from the
-exact sealed source and architecture selections retained by the build request. It accepts no separate caller-supplied source or build
-authority and never reconstructs build provenance from planner facts.
+The adapter passes the retained build-image authority directly through
+**libpkgstate-build**. That boundary derives the state source record and build
+provenance from the exact sealed source, resolver-backed request, successful
+build result, and independently inspected image. It accepts no separate
+caller-supplied source, build result, image, or provenance value and never
+reconstructs build provenance from planner facts.
 
 Installation additionally takes one typed initial installation reason. Upgrade
 preserves the prior installed reason. Removal accepts no incoming package or
@@ -87,6 +89,6 @@ semantics.
 
 # SEE ALSO
 
-**libpkgapply**(3), **libpkgstate-source**(3),
-**libpkgstate-build**(3), **pkgstate_installation_receipt**(3),
+**libpkgapply**(3), **libpkgbuild-image**(3), **libpkgbuild-plan**(3),
+**libpkgstate-source**(3), **libpkgstate-build**(3), **pkgstate_installation_receipt**(3),
 **pkgstate_publication**(3)

@@ -10,7 +10,7 @@ lease-bound canonical state + completed application -> state_publication_request
 
 This repository owns the composition seam between request-bound `libpkgapply` evidence and state-owned publication authority. It is a translation boundary, not another semantic owner. Its input and output models remain authoritative in their respective repositories.
 
-The public operation accepts a live caller-owned target lease for the pre-effect read, then the exact operation request and completed application evidence for publication projection. A successful projection retains the exact expected state epoch, path-owner projection, incoming request-bound build authority, complete object consequences, optional transaction evidence, and one immutable publication request.
+The public operation accepts a live caller-owned target lease for the pre-effect read, then the exact operation request and completed application evidence for publication projection. A successful projection retains the exact expected state epoch, path-owner projection, request-bound build-image authority, complete object consequences, optional transaction evidence, and one immutable publication request.
 
 The adapter performs no discovery, parsing, dependency resolution, build execution, archive inspection, target mutation, state publication, migration, retry policy, or compatibility import unless the operation is explicitly part of the contract above. It exports refusal rather than guessing. It refuses lease, request, plan, target, state, ownership, package, path, incoming authority, identity, or publication construction mismatch.
 

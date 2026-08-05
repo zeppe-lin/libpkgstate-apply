@@ -15,6 +15,9 @@ for token in 'GCC shared' 'GCC static' 'Clang shared' 'Clang static' 'GCC releas
 done
 grep -F -- 'repository: zeppe-lin/libpkgapply' "$workflow" >/dev/null || fail 'missing dependency pin: repository: zeppe-lin/libpkgapply'
 grep -F -- 'ref: v3.0.0' "$workflow" >/dev/null || fail 'missing dependency pin: ref: v3.0.0'
+for repository in libpkgcatalog libpkgresolve libpkgbuild-image libpkgbuild-plan; do
+  grep -F -- "repository: zeppe-lin/$repository" "$workflow" >/dev/null ||     fail "missing dependency pin: repository: zeppe-lin/$repository"
+done
 grep -F -- 'repository: zeppe-lin/libpkgstate-build' "$workflow" >/dev/null || fail 'missing dependency pin: repository: zeppe-lin/libpkgstate-build'
 grep -F -- 'repository: zeppe-lin/libpkgsource-plan' "$workflow" >/dev/null || fail 'missing dependency pin: repository: zeppe-lin/libpkgsource-plan'
 grep -F -- 'ref: v1.0.0' "$workflow" >/dev/null || fail 'missing dependency pin: ref: v1.0.0'

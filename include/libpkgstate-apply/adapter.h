@@ -66,9 +66,9 @@ private:
 /*!
  * \brief Construct installation publication from completed native application.
  *
- * Incoming source and build authority are taken only from the exact successful
- * build and independent image inspection retained by \p request. That authority
- * is admitted through libpkgstate-build. The function binds completed object
+ * Incoming source and build authority are taken only from the exact
+ * libpkgbuild-image admission retained by \p request. That authority is
+ * projected through libpkgstate-build. The function binds completed object
  * truth, accepted plan authority, the lease-bound state projection, and the
  * caller-selected initial installation reason.
  *
@@ -114,7 +114,8 @@ project_completed_application(
  * \brief Construct replacement publication from completed native application.
  *
  * The prior installed package's reason is retained. Incoming source and build
- * authority are taken only from the exact request named by completed evidence.
+ * authority are taken only from the exact build-image admission named by the
+ * request and completed evidence.
  *
  * \param expected_state Exact canonical state admitted before application.
  * \param application_state Matching lease-bound application path projection.

@@ -42,12 +42,16 @@ build_one()
 }
 
 build_one libpkgsource -Dhtml_docs=disabled
+build_one libpkgstate -Dhtml_docs=disabled
+build_one libpkgcatalog -Dhtml_docs=disabled
+build_one libpkgresolve
+build_one libpkgbuild
 build_one libpkgimage -Dhtml_docs=disabled
-build_one libpkgbuild -Dplanner_adapter=disabled
 build_one libpkgplan -Dreference_tools=disabled -Dhtml_docs=disabled
+build_one libpkgbuild-image
 build_one libpkgsource-plan -Dhtml_docs=disabled
-build_one libpkgapply
-build_one libpkgstate -Dtools=disabled
+build_one libpkgbuild-plan
+build_one libpkgapply -Dhtml_docs=disabled
 build_one libpkgstate-source
 build_one libpkgstate-build
 build_one libpkgstate-plan

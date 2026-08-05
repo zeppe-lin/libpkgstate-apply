@@ -43,11 +43,11 @@ failure is exported as a typed refusal. Native store failures remain native
 `project_completed_application()` checks request, operation, plan, target,
 state, ownership, package, and completed-path bindings. For installation and
 upgrade, incoming source and build authority are taken only from the exact
-`incoming_package_authority` retained by the application request. The adapter
-admits the retained build result and inspected image through
-`libpkgstate-build`, which derives the state
-source record from the build request. It accepts no parallel caller-supplied
-source or build authority.
+`libpkgbuild-image` admission retained by the request's
+`incoming_package_authority`. The adapter passes that already admitted value to
+`libpkgstate-build`, which derives the durable source record and provenance from
+one inseparable build/image authority. It accepts no parallel caller-supplied
+source, build result, image, or provenance value.
 
 Installation receives one typed initial reason. Upgrade preserves the existing
 reason. Removal accepts neither incoming package authority nor a replacement

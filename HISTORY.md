@@ -13,5 +13,6 @@
 - Reused `libpkgstate-plan` as the sole durable source-control projection into planner vocabulary.
 - Raised the application dependency to the repository-separated `libpkgapply` 3.0 generation.
 - Bound the adapter to the corrected repository-separated `libpkgapply` 3.0 dependency graph.
-- Removed duplicate source/build dependency edges; incoming state authority is now admitted only through `libpkgstate-build`.
+- Removed duplicate source/build dependency edges; incoming state authority is now projected from the exact `libpkgbuild-image` admission retained by the application request.
+- Corrected the transaction-evidence export spellings after the state identity ABI reset without widening the reviewed symbol surface.
 - Updated source-authority fixtures to the syntax-neutral `libpkgsource` 3.0 sealing contract.
