@@ -16,3 +16,7 @@ Completed-object qualification
 The behavior test keeps the application/state seam explicit: partial object
 evidence is refused, while a complete regular object may retain an unknown
 hard-link relation and publish no hard-link anchor.
+
+The documentation contract receives the include roots of the production
+dependencies resolved by Meson before Clang parses public headers. Ambient
+system-installed zoo headers are not accepted as dependency closure.

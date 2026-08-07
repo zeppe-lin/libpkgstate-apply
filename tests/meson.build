@@ -47,11 +47,39 @@ if get_option('tests').allowed()
     )
   endif
   sh = find_program('sh')
+  libpkgstate_public_include = libpkgstate_dep.get_variable(
+    pkgconfig: 'includedir',
+  )
+  libpkgapply_public_include = libpkgapply_dep.get_variable(
+    pkgconfig: 'includedir',
+  )
+  libpkgstate_build_public_include = libpkgstate_build_dep.get_variable(
+    pkgconfig: 'includedir',
+  )
+  libpkgstate_plan_public_include = libpkgstate_plan_dep.get_variable(
+    pkgconfig: 'includedir',
+  )
+  libpkgplan_public_include = libpkgplan_dep.get_variable(
+    pkgconfig: 'includedir',
+  )
   foreach contract : ['architecture', 'documentation', 'release_metadata', 'repository', 'extraction', 'ci']
+    contract_args = [
+      join_paths(meson.current_source_dir(), 'check_' + contract + '.sh'),
+      meson.project_source_root(),
+    ]
+    if contract == 'documentation'
+      contract_args += [
+        libpkgstate_public_include,
+        libpkgapply_public_include,
+        libpkgstate_build_public_include,
+        libpkgstate_plan_public_include,
+        libpkgplan_public_include,
+      ]
+    endif
     test(
       contract.replace('_', '-'),
       sh,
-      args: [join_paths(meson.current_source_dir(), 'check_' + contract + '.sh'), meson.project_source_root()],
+      args: contract_args,
     )
   endforeach
   test(
