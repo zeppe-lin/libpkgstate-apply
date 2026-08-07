@@ -9,3 +9,10 @@ Source contracts verify architecture placement, release metadata, repository hyg
 CI runs GCC and Clang in separate shared and static configurations, one optimized release configuration, and ASan/UBSan configurations. Installation qualification compiles a consumer against staged headers and metadata, checks every installed header, audits the shared boundary or static archive, and verifies installed manual and project documentation.
 
 A release candidate is incomplete until the exact dependency tags used by CI exist and the whole matrix is green from clean build directories.
+
+Completed-object qualification
+------------------------------
+
+The behavior test keeps the application/state seam explicit: partial object
+evidence is refused, while a complete regular object may retain an unknown
+hard-link relation and publish no hard-link anchor.

@@ -595,7 +595,11 @@ durability()
 }
 
 pkgapply::completed_object_fact
-completed_regular(const pkgplan::package_path& path, std::uint8_t content)
+completed_regular(
+    const pkgplan::package_path& path,
+    std::uint8_t content,
+    pkgapply::object_fact_completeness completeness =
+        pkgapply::object_fact_completeness::complete)
 {
   return pkgapply::completed_object_fact(
       path,
@@ -615,7 +619,7 @@ completed_regular(const pkgplan::package_path& path, std::uint8_t content)
       pkgapply::qualified_fact<pkgapply::completed_hardlink_relation>::
           unknown(),
       pkgapply::object_fact_provenance::application_observation,
-      pkgapply::object_fact_completeness::complete);
+      completeness);
 }
 
 std::vector<pkgplan::installed_package_identity>
@@ -1004,6 +1008,7 @@ check_installation()
   CHECK(object.mtime().seconds() == 10);
   CHECK(object.mtime().nanoseconds() == 0);
   CHECK(object.regular_content().has_value());
+  CHECK(!object.hardlink_anchor().has_value());
 
   const pkgstate::installed_control& control = installed.control();
   CHECK(control.source().runtime_requirements().size() == 1);
@@ -1281,6 +1286,48 @@ check_failures()
     CHECK(error.code() ==
           pkgstate::apply_adapter::projection_error_code::
               expected_state_mismatch);
+  }
+
+  const auto partial_object_evidence =
+      pkgapply::completed_application_evidence::installation(
+          fixture.request,
+          apply_identity<pkgapply::application_attempt_identity>(93),
+          fixture.projection.identity(),
+          apply_identity<pkgapply::application_journal_identity>(94),
+          {pkgapply::application_path_consequence(
+              fixture.plan.paths().front().path(),
+              application_role(fixture.plan.paths().front().role()),
+              fixture.plan.paths().front().active(),
+              fixture.plan.paths().front().rejected(),
+              fixture.plan.paths().front().incoming_entry(),
+              fixture.plan.paths().front().ownership(),
+              pkgapply::application_effect_status::completed,
+              pkgapply::application_effect_status::not_attempted,
+              pkgapply::application_path_observation::absent(
+                  fixture.plan.paths().front().path()),
+              pkgapply::application_path_observation::present(
+                  completed_regular(
+                      fixture.plan.paths().front().path(), 1,
+                      pkgapply::object_fact_completeness::partial)),
+              std::nullopt,
+              pkgapply::ownership_publication_status::eligible)},
+          durability());
+  try
+  {
+    static_cast<void>(
+        pkgstate::apply_adapter::project_completed_application(
+            fixture.expected,
+            fixture.projection,
+            fixture.request,
+            partial_object_evidence,
+            pkgstate::installation_reason::explicit_request()));
+    CHECK(false);
+  }
+  catch (const pkgstate::apply_adapter::projection_error& error)
+  {
+    CHECK(error.code() ==
+          pkgstate::apply_adapter::projection_error_code::
+              completed_path_mismatch);
   }
 
   const auto foreign_target = pkgapply::application_target_context::make(
