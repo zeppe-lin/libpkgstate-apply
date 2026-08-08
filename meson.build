@@ -69,6 +69,18 @@ libpkgsource_test_dep = dependency(
   required: get_option('tests'),
   static: want_static,
 )
+libpkgsource_plan_test_dep = dependency(
+  'libpkgsource-plan',
+  version: ['>=1.0.0', '<2.0.0'],
+  required: get_option('tests'),
+  static: want_static,
+)
+libpkgbuild_test_dep = dependency(
+  'libpkgbuild',
+  version: ['>=3.0.0', '<4.0.0'],
+  required: get_option('tests'),
+  static: want_static,
+)
 libpkgstate_source_test_dep = dependency(
   'libpkgstate-source',
   version: '>=3.0.0',
