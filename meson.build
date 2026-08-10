@@ -132,7 +132,7 @@ libpkgcatalog_test_dep = dependency(
 
 libpkgresolve_test_dep = dependency(
   'libpkgresolve',
-  version: ['>=2.0.0', '<3.0.0'],
+  version: ['>=3.0.0', '<4.0.0'],
   required: get_option('tests'),
   static: want_static,
 )
