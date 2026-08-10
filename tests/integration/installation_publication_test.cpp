@@ -3,6 +3,8 @@
 
 #include "../fixtures/state.h"
 
+#include <string>
+
 using namespace test_fixture;
 
 int
@@ -60,7 +62,13 @@ main()
   CHECK(control.reason().kind() ==
         pkgstate::installation_reason_kind::explicit_request);
   const auto authority = state_build_authority(fixture.request.incoming());
+  CHECK(control.source() == authority.source());
+  CHECK(control.source().snapshot() == authority.source().snapshot());
+  CHECK(control.source().snapshot().string() ==
+        std::string("v1:sha256:") +
+            fixture.request.incoming().projection().candidate().source_identity().hex());
   CHECK(control.build() == authority.provenance());
+  CHECK(control.build().source_record() == control.source().identity());
   CHECK(control.build().artifact_content().string() ==
         fixture.plan.publication().artifact().string());
   CHECK(installed.receipt().operation_plan().string() ==

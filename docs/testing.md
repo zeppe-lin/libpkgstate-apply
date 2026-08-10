@@ -62,7 +62,10 @@ CI runs GCC and Clang in separate shared and static configurations, one
 optimized release configuration, and ASan/UBSan configurations. Installation
 qualification compiles a consumer against staged headers and metadata, checks
 every installed header, audits the shared boundary or static archive, and
-verifies installed manual and project documentation.
+verifies installed manual and project documentation. The staged consumer
+constructs both public adapter error models so static linkage must extract both
+implementation translation units and resolve the complete private state-build,
+state-plan, planner, and crypto closure; an address-only consumer is not accepted.
 
 The documentation contract receives the include roots of the production
 dependencies resolved by Meson before Clang parses public headers. Ambient

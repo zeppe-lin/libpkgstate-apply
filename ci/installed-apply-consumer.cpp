@@ -3,9 +3,27 @@
 
 #include <libpkgstate-apply/libpkgstate-apply.h>
 
+#include <string>
+
 int
 main()
 {
-  auto* volatile function = &pkgstate::apply_adapter::read_application_state;
-  return function == nullptr ? 1 : 0;
+  pkgstate::apply_adapter::projection_error publication(
+      pkgstate::apply_adapter::projection_error_code::completed_path_mismatch,
+      "publication");
+  pkgstate::apply_adapter::application_state_projection_error state(
+      pkgstate::apply_adapter::application_state_projection_error_code::lease_lost,
+      "state");
+
+  if (publication.code() !=
+          pkgstate::apply_adapter::projection_error_code::completed_path_mismatch ||
+      state.code() !=
+          pkgstate::apply_adapter::application_state_projection_error_code::lease_lost)
+  {
+    return 1;
+  }
+  return std::string(publication.what()) == "publication" &&
+                 std::string(state.what()) == "state"
+             ? 0
+             : 1;
 }

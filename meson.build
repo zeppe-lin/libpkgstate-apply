@@ -65,13 +65,13 @@ libcrypto_dep = dependency(
 )
 libpkgsource_test_dep = dependency(
   'libpkgsource',
-  version: '>=3.0.0',
+  version: '>=3.0.1',
   required: get_option('tests'),
   static: want_static,
 )
 libpkgsource_plan_test_dep = dependency(
   'libpkgsource-plan',
-  version: ['>=1.0.0', '<2.0.0'],
+  version: ['>=1.1.0', '<2.0.0'],
   required: get_option('tests'),
   static: want_static,
 )
@@ -108,7 +108,7 @@ libpkgbuild_plan_test_dep = dependency(
 )
 libpkgcatalog_test_dep = dependency(
   'libpkgcatalog',
-  version: ['>=3.0.0', '<4.0.0'],
+  version: ['>=3.0.1', '<4.0.0'],
   required: get_option('tests'),
   static: want_static,
 )

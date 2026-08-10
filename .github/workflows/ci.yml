@@ -34,11 +34,11 @@ jobs:
     steps:
       - name: Check out libpkgstate-apply
         uses: actions/checkout@v4
-      - name: Check out libpkgsource 3.0.0
+      - name: Check out libpkgsource 3.0.1
         uses: actions/checkout@v4
         with:
           repository: zeppe-lin/libpkgsource
-          ref: v3.0.0
+          ref: v3.0.1
           path: dependencies/libpkgsource
       - name: Check out libpkgimage 0.4.0
         uses: actions/checkout@v4
@@ -46,11 +46,11 @@ jobs:
           repository: zeppe-lin/libpkgimage
           ref: v0.4.0
           path: dependencies/libpkgimage
-      - name: Check out libpkgcatalog 3.0.0
+      - name: Check out libpkgcatalog 3.0.1
         uses: actions/checkout@v4
         with:
           repository: zeppe-lin/libpkgcatalog
-          ref: v3.0.0
+          ref: v3.0.1
           path: dependencies/libpkgcatalog
       - name: Check out libpkgresolve 2.0.0
         uses: actions/checkout@v4
@@ -64,11 +64,11 @@ jobs:
           repository: zeppe-lin/libpkgbuild
           ref: v3.0.0
           path: dependencies/libpkgbuild
-      - name: Check out libpkgplan 0.3.0
+      - name: Check out libpkgplan 0.3.1
         uses: actions/checkout@v4
         with:
           repository: zeppe-lin/libpkgplan
-          ref: v0.3.0
+          ref: v0.3.1
           path: dependencies/libpkgplan
       - name: Check out libpkgbuild-image 1.0.0
         uses: actions/checkout@v4
@@ -76,11 +76,11 @@ jobs:
           repository: zeppe-lin/libpkgbuild-image
           ref: v1.0.0
           path: dependencies/libpkgbuild-image
-      - name: Check out libpkgsource-plan 1.0.0
+      - name: Check out libpkgsource-plan 1.1.0
         uses: actions/checkout@v4
         with:
           repository: zeppe-lin/libpkgsource-plan
-          ref: v1.0.0
+          ref: v1.1.0
           path: dependencies/libpkgsource-plan
       - name: Check out libpkgbuild-plan 1.0.0
         uses: actions/checkout@v4
@@ -94,11 +94,11 @@ jobs:
           repository: zeppe-lin/libpkgapply
           ref: v3.0.0
           path: dependencies/libpkgapply
-      - name: Check out libpkgstate 3.0.0
+      - name: Check out libpkgstate 3.1.0
         uses: actions/checkout@v4
         with:
           repository: zeppe-lin/libpkgstate
-          ref: v3.0.0
+          ref: v3.1.0
           path: dependencies/libpkgstate
       - name: Check out libpkgstate-source 3.0.0
         uses: actions/checkout@v4
@@ -188,11 +188,11 @@ jobs:
     steps:
       - name: Check out libpkgstate-apply
         uses: actions/checkout@v4
-      - name: Check out libpkgsource 3.0.0
+      - name: Check out libpkgsource 3.0.1
         uses: actions/checkout@v4
         with:
           repository: zeppe-lin/libpkgsource
-          ref: v3.0.0
+          ref: v3.0.1
           path: dependencies/libpkgsource
       - name: Check out libpkgimage 0.4.0
         uses: actions/checkout@v4
@@ -200,11 +200,11 @@ jobs:
           repository: zeppe-lin/libpkgimage
           ref: v0.4.0
           path: dependencies/libpkgimage
-      - name: Check out libpkgcatalog 3.0.0
+      - name: Check out libpkgcatalog 3.0.1
         uses: actions/checkout@v4
         with:
           repository: zeppe-lin/libpkgcatalog
-          ref: v3.0.0
+          ref: v3.0.1
           path: dependencies/libpkgcatalog
       - name: Check out libpkgresolve 2.0.0
         uses: actions/checkout@v4
@@ -218,11 +218,11 @@ jobs:
           repository: zeppe-lin/libpkgbuild
           ref: v3.0.0
           path: dependencies/libpkgbuild
-      - name: Check out libpkgplan 0.3.0
+      - name: Check out libpkgplan 0.3.1
         uses: actions/checkout@v4
         with:
           repository: zeppe-lin/libpkgplan
-          ref: v0.3.0
+          ref: v0.3.1
           path: dependencies/libpkgplan
       - name: Check out libpkgbuild-image 1.0.0
         uses: actions/checkout@v4
@@ -230,11 +230,11 @@ jobs:
           repository: zeppe-lin/libpkgbuild-image
           ref: v1.0.0
           path: dependencies/libpkgbuild-image
-      - name: Check out libpkgsource-plan 1.0.0
+      - name: Check out libpkgsource-plan 1.1.0
         uses: actions/checkout@v4
         with:
           repository: zeppe-lin/libpkgsource-plan
-          ref: v1.0.0
+          ref: v1.1.0
           path: dependencies/libpkgsource-plan
       - name: Check out libpkgbuild-plan 1.0.0
         uses: actions/checkout@v4
@@ -248,11 +248,11 @@ jobs:
           repository: zeppe-lin/libpkgapply
           ref: v3.0.0
           path: dependencies/libpkgapply
-      - name: Check out libpkgstate 3.0.0
+      - name: Check out libpkgstate 3.1.0
         uses: actions/checkout@v4
         with:
           repository: zeppe-lin/libpkgstate
-          ref: v3.0.0
+          ref: v3.1.0
           path: dependencies/libpkgstate
       - name: Check out libpkgstate-source 3.0.0
         uses: actions/checkout@v4
