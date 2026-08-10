@@ -5,6 +5,7 @@
  * \file adapter.h
  * \brief Projection of completed package application into installed state.
  */
+
 #pragma once
 
 #include <libpkgstate-apply/export.h>

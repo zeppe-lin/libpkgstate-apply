@@ -5,6 +5,7 @@
  * \file libpkgstate-apply.h
  * \brief Umbrella header for application-state admission and publication.
  */
+
 #pragma once
 
 #include <libpkgstate-apply/export.h>

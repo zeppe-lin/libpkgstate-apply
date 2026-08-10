@@ -23,27 +23,27 @@ universe, and completed path consequences. It returns an immutable
 
 Additive overloads accept one exact **transaction_evidence_identity**. When
 supplied, transaction evidence is retained by the publication request and, for
-installation or upgrade, by the durable installation receipt. The same
-evidence is supplied to both objects during construction; it is never attached
-after projection.
+installation or upgrade, by the durable installation receipt. The same evidence
+is supplied to both objects during construction; it is never attached after
+projection.
 
 # LEASE-BOUND STATE READ
 
 **read_application_state()** accepts one exact **package_application_request**, one
-caller-owned **target_mutation_lease**, and one **canonical_store**. It first proves
-that the lease is live and belongs to the request target and exclusion domain,
-then performs exactly one canonical store read. The returned
+caller-owned **target_mutation_lease**, and one **canonical_store**. It first
+proves that the lease is live and belongs to the request target and exclusion
+domain, then performs exactly one canonical store read. The returned
 **lease_bound_application_state** owns both the storage-derived **snapshot** and
 the matching **lease_bound_state_projection** so they cannot be paired with
 different state epochs.
 
 The projection contains the accepted plan's exact path universe and the current
 installed owners derived from the canonical snapshot. It is complete only when
-the snapshot identity, ownership inventory, target binding, and every path-owner
-set agree with the accepted plan. Projection evidence is derived canonically
-from the request, target, lease acquisition, target binding, state epoch,
-ownership inventory, and path-owner closure. A caller does not supply that
-evidence identity.
+the snapshot identity, ownership inventory, target binding, and every
+path-owner set agree with the accepted plan. Projection evidence is derived
+canonically from the request, target, lease acquisition, target binding, state
+epoch, ownership inventory, and path-owner closure. A caller does not supply
+that evidence identity.
 
 The lease is checked before and after the state read and again before return. A
 lost or foreign lease is a typed projection refusal. Store read failures retain
@@ -54,9 +54,9 @@ publish state, reconcile, or repair.
 # INCOMING AUTHORITY
 
 Installation and upgrade requests retain an **incoming_package_authority** that
-contains one complete **libpkgbuild-plan** projection. That projection retains the
-exact **libpkgbuild-image** admission together with source-derived candidate and
-artifact facts established before mutation.
+contains one complete **libpkgbuild-plan** projection. That projection retains
+the exact **libpkgbuild-image** admission together with source-derived candidate
+and artifact facts established before mutation.
 
 The adapter passes the retained build-image authority directly through
 **libpkgstate-build**. That boundary derives the state source record and build
@@ -89,6 +89,10 @@ semantics.
 
 # SEE ALSO
 
-**libpkgapply**(3), **libpkgbuild-image**(3), **libpkgbuild-plan**(3),
-**libpkgstate-source**(3), **libpkgstate-build**(3), **pkgstate_installation_receipt**(3),
+**libpkgapply**(3),
+**libpkgbuild-image**(3),
+**libpkgbuild-plan**(3),
+**libpkgstate-source**(3),
+**libpkgstate-build**(3),
+**pkgstate_installation_receipt**(3),
 **pkgstate_publication**(3)

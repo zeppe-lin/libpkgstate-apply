@@ -2,7 +2,8 @@
 
 ## Authority flow
 
-Contract shorthand: `lease-bound canonical state + completed application -> state_publication_request`.
+Contract shorthand:
+`lease-bound canonical state + completed application -> state_publication_request`.
 
 ```text
 caller-held target mutation lease
@@ -45,9 +46,9 @@ state, ownership, package, and completed-path bindings. For installation and
 upgrade, incoming source and build authority are taken only from the exact
 `libpkgbuild-image` admission retained by the request's
 `incoming_package_authority`. The adapter passes that already admitted value to
-`libpkgstate-build`, which derives the durable source record and provenance from
-one inseparable build/image authority. It accepts no parallel caller-supplied
-source, build result, image, or provenance value.
+`libpkgstate-build`, which derives the durable source record and provenance
+from one inseparable build/image authority. It accepts no parallel
+caller-supplied source, build result, image, or provenance value.
 
 Installation receives one typed initial reason. Upgrade preserves the existing
 reason. Removal accepts neither incoming package authority nor a replacement
@@ -68,8 +69,8 @@ refusal, not arbitrary process failure.
 
 ## Dependency placement
 
-Installed declarations expose only `libpkgstate` and `libpkgapply` types.
-The build-admission, state-to-planner, planner-model, and crypto edges are
+Installed declarations expose only `libpkgstate` and `libpkgapply` types.  The
+build-admission, state-to-planner, planner-model, and crypto edges are
 implementation-only: private for shared consumers and present in the static
 closure. Source admission and build-model closure are owned transitively by
 `libpkgstate-build`; this repository does not redeclare them.
@@ -78,6 +79,6 @@ The repository was seeded from the two 2.5.1 implementation bodies. The root
 extraction remains provenance; subsequent changes may refine this boundary
 without pretending the historical body is still current.
 
-The adapter consumes only semantic `libpkgapply` evidence. It does not depend on
-`libpkgapply-posix` or any other application mechanism provider; filesystem
+The adapter consumes only semantic `libpkgapply` evidence. It does not depend
+on `libpkgapply-posix` or any other application mechanism provider; filesystem
 mechanics are complete before this translation begins.

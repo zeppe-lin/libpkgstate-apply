@@ -5,6 +5,7 @@
  * \file state_projection.h
  * \brief Lease-bound projection of canonical installed state into libpkgapply.
  */
+
 #pragma once
 
 #include <libpkgstate-apply/export.h>
