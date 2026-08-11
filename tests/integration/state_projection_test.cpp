@@ -83,7 +83,7 @@ main()
           request, journal, restart_lease, restart_store);
   CHECK(restart_store.reads() == 1);
   CHECK(restart_trace ==
-        std::vector<std::string>({"held", "read", "held"}));
+        std::vector<std::string>({"held", "read", "held", "held"}));
   CHECK(historical.state().identity() == fixture.expected.identity());
   CHECK(historical.projection().identity() == projected.projection().identity());
   CHECK(historical.projection().lease() == lease.identity());

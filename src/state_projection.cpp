@@ -200,10 +200,8 @@ struct projected_application_state final {
 projected_application_state project_application_state(
     const pkgapply::package_application_request& request,
     const pkgapply::mutation_lease_instance_identity& projection_lease,
-    const canonical_store& store)
+    snapshot current)
 {
-  snapshot current = store.read();
-
   const pkgplan::operation_preconditions& required = preconditions(request);
   if (required.target() != request.target().target())
   {
@@ -332,7 +330,10 @@ lease_bound_application_state read_application_state(
     const canonical_store& store)
 {
   validate_lease_before_read(request, lease);
-  auto projected = project_application_state(request, lease.identity(), store);
+  snapshot current = store.read();
+  require_lease_still_held(lease);
+  auto projected =
+      project_application_state(request, lease.identity(), std::move(current));
   require_lease_still_held(lease);
   return lease_bound_application_state(
       std::move(projected.state), std::move(projected.projection));
@@ -346,7 +347,10 @@ lease_bound_application_state read_historical_application_state(
 {
   validate_lease_before_read(request, lease);
   validate_journal_binding(request, journal);
-  auto projected = project_application_state(request, journal.lease(), store);
+  snapshot current = store.read();
+  require_lease_still_held(lease);
+  auto projected =
+      project_application_state(request, journal.lease(), std::move(current));
   require_lease_still_held(lease);
   if (projected.projection.identity() != journal.state_projection())
   {
