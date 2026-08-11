@@ -4,7 +4,7 @@
 project(
   'libpkgstate-apply',
   'cpp',
-  version: '3.0.0',
+  version: '3.1.0',
   license: 'GPL-3.0-or-later',
   meson_version: '>=1.6.0',
   default_options: [

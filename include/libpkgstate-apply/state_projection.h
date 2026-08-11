@@ -14,6 +14,7 @@
 #include <stdexcept>
 #include <string>
 
+#include <libpkgapply/journal.h>
 #include <libpkgapply/mutation_lease.h>
 #include <libpkgapply/request.h>
 #include <libpkgapply/state_projection.h>
@@ -41,6 +42,8 @@ enum class application_state_projection_error_code : std::uint8_t {
   identity_translation = 10,       //!< Foreign identity text was invalid.
   path_translation = 11,           //!< Planner and state path vocabularies differ.
   evidence_construction = 12,      //!< Application projection refused evidence.
+  journal_binding_mismatch = 13,    //!< Historical journal names another request.
+  historical_projection_mismatch = 14, //!< Rebuilt history differs from journal.
 };
 
 /*! \brief Invalid authority universe for a lease-bound application-state read. */
@@ -95,6 +98,12 @@ private:
   read_application_state(const pkgapply::package_application_request&,
                          const pkgapply::target_mutation_lease&,
                          const canonical_store&);
+  friend PKGSTATE_APPLY_API lease_bound_application_state
+  read_historical_application_state(
+      const pkgapply::package_application_request&,
+      const pkgapply::application_journal_header&,
+      const pkgapply::target_mutation_lease&,
+      const canonical_store&);
 
   lease_bound_application_state(
       snapshot state,
@@ -128,5 +137,36 @@ private:
 read_application_state(const pkgapply::package_application_request& request,
                        const pkgapply::target_mutation_lease& lease,
                        const canonical_store& store);
+
+/*!
+ * \brief Reconstruct the exact historical application-state projection.
+ *
+ * Restart may reacquire target exclusion after physical application completed
+ * but before canonical state publication.  The new lease must guard the read,
+ * while completed application evidence remains bound to the original lease-
+ * projection recorded by the durable application journal header.  This
+ * function reads the still-unpublished canonical pre-state under @p lease,
+ * reconstructs projection evidence using @p journal's historical lease
+ * identity, and refuses unless the resulting projection identity exactly
+ * equals the journal's admitted state projection.
+ *
+ * The function does not resume application, reinterpret a terminal journal,
+ * publish state, or weaken lease/projection identity binding.
+ *
+ * \param request Exact immutable application request.
+ * \param journal Durable historical application journal header.
+ * \param lease Newly held lease guarding restart-time canonical-state read.
+ * \param store Canonical state store still naming the admitted pre-state.
+ * \return Canonical snapshot and exact historical lease-bound projection.
+ * \throws application_state_projection_error when request, journal, lease,
+ *         canonical state, or reconstructed projection authority disagrees.
+ * \throws store_error when the canonical store cannot be read.
+ */
+[[nodiscard]] PKGSTATE_APPLY_API lease_bound_application_state
+read_historical_application_state(
+    const pkgapply::package_application_request& request,
+    const pkgapply::application_journal_header& journal,
+    const pkgapply::target_mutation_lease& lease,
+    const canonical_store& store);
 
 } // namespace pkgstate::apply_adapter

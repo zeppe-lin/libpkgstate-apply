@@ -1,5 +1,14 @@
 # History
 
+## 3.1.0 (2026-08-11)
+
+- Added restart-time reconstruction of the exact historical lease-bound
+  application-state projection recorded by a durable application journal.
+- Kept SONAME generation 3: the new API is additive and preserves the 3.0 ABI.
+- Reconstruction reads canonical pre-state under a newly held lease but hashes
+  the historical lease identity, then refuses unless the resulting projection
+  identity exactly matches the journal header.
+
 ## 3.0.0 (2026-08-04)
 
 - Extracted `libpkgstate-apply` from the `libpkgstate` 2.5.1 repository.

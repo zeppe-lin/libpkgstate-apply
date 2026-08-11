@@ -1,4 +1,4 @@
-% LIBPKGSTATE-APPLY(3) libpkgstate-apply | Version 3.0.0
+% LIBPKGSTATE-APPLY(3) libpkgstate-apply | Version 3.1.0
 
 <!-- Generated from libpkgstate-apply.3.scdoc; do not edit. -->
 
@@ -50,6 +50,16 @@ lost or foreign lease is a typed projection refusal. Store read failures retain
 their native **store_error** classification. The function does not acquire a
 lease, initialize a store, inspect the target filesystem, perform application,
 publish state, reconcile, or repair.
+
+**read_historical_application_state()** handles restart after physical
+application completed but before canonical publication. The caller supplies the
+same request, the durable **application_journal_header**, a newly held target
+lease, and the canonical store. The new lease guards the read; the reconstructed
+projection is derived with the historical lease identity recorded by the
+journal. The function refuses unless request, plan, target, control, backend,
+canonical state, ownership, path facts, and the resulting projection identity
+reproduce the journal authority exactly. It does not resume application or
+weaken completed-evidence binding.
 
 # INCOMING AUTHORITY
 

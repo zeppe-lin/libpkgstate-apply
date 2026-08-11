@@ -39,6 +39,15 @@ target drift, state drift, incomplete ownership, or identity translation
 failure is exported as a typed refusal. Native store failures remain native
 `store_error` failures.
 
+`read_historical_application_state()` is the restart counterpart for the
+crash window after physical completion but before canonical publication. A
+newly held lease guards the canonical-state read, while the projection itself
+is reconstructed with the historical lease identity retained by the durable
+application journal header. Request, plan, target, control, and backend must
+match the journal, and the reconstructed projection identity must equal the
+journal's admitted projection. The adapter therefore preserves completed
+evidence binding without pretending the new lease is the original lease.
+
 ## Completed-application admission
 
 `project_completed_application()` checks request, operation, plan, target,

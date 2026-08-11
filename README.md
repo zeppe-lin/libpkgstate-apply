@@ -14,9 +14,12 @@ evidence and state-owned publication authority. It is a translation boundary,
 not another semantic owner. Its input and output models remain authoritative in
 their respective repositories.
 
-The public operation accepts a live caller-owned target lease for the
-pre-effect read, then the exact operation request and completed application
-evidence for publication projection. A successful projection retains the exact
+The live read accepts a caller-owned target lease. Restart-time historical
+reconstruction additionally accepts the durable application journal header and
+a newly held lease, re-derives the original projection from canonical pre-state,
+and refuses unless it reproduces the journal-bound projection exactly. The
+publication adapter then accepts the exact operation request and completed
+application evidence. A successful projection retains the exact
 expected state epoch, path-owner projection, request-bound build-image
 authority, complete object consequences, optional transaction evidence, and one
 immutable publication request.

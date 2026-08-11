@@ -10,7 +10,7 @@ rm -rf "$install_prefix"
 meson install -C "$build_dir"
 export PKG_CONFIG_PATH=$install_prefix/lib/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}
 unset PKG_CONFIG_SYSROOT_DIR
-test "$(pkg-config --modversion libpkgstate-apply)" = 3.0.0
+test "$(pkg-config --modversion libpkgstate-apply)" = 3.1.0
 tmp=$(mktemp -d)
 trap 'rm -rf "$tmp"' EXIT HUP INT TERM
 flags=$(pkg-config --cflags --libs libpkgstate-apply)
@@ -47,7 +47,7 @@ int main() { return 0; }
   ${CXX:-c++} -std=c++17 -Wall -Wextra -Wpedantic -Werror -fsyntax-only $(pkg-config --cflags libpkgstate-apply) "$tmp/header.cpp"
 done
 case $link_mode in
-  shared) "$(dirname "$0")/audit-shared-boundary.sh" "$install_prefix/lib/libpkgstate-apply.so.3.0.0" ;;
+  shared) "$(dirname "$0")/audit-shared-boundary.sh" "$install_prefix/lib/libpkgstate-apply.so.3.1.0" ;;
   static) test -f "$install_prefix/lib/libpkgstate-apply.a" ;;
 esac
 if [ -s "$build_dir/man/libpkgstate-apply.3" ]; then

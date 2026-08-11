@@ -144,7 +144,7 @@ private:
 
 pkgapply::state_projection_evidence_identity identify_evidence(
     const pkgapply::package_application_request& request,
-    const pkgapply::target_mutation_lease& lease,
+    const pkgapply::mutation_lease_instance_identity& lease,
     const snapshot& state,
     const std::vector<pkgapply::projected_path_owners>& paths)
 {
@@ -152,7 +152,7 @@ pkgapply::state_projection_evidence_identity identify_evidence(
   record.append_u16(application_state_projection_evidence_schema_version);
   record.append_bytes(request.identity().string());
   record.append_bytes(request.target().identity().string());
-  record.append_bytes(lease.identity().string());
+  record.append_bytes(lease.string());
   record.append_bytes(state.target_binding().identity().string());
   record.append_bytes(state.identity().string());
   record.append_bytes(state.ownership_identity().string());
@@ -174,6 +174,99 @@ pkgapply::state_projection_evidence_identity identify_evidence(
     value.push_back(hexadecimal[byte & 0x0fU]);
   }
   return pkgapply::state_projection_evidence_identity::parse(value);
+}
+
+void validate_journal_binding(
+    const pkgapply::package_application_request& request,
+    const pkgapply::application_journal_header& journal)
+{
+  if (journal.kind() != request.kind() ||
+      journal.request() != request.identity() ||
+      journal.plan() != request.plan() ||
+      journal.target() != request.target().identity() ||
+      journal.control() != request.control().identity() ||
+      journal.backend() != request.target().mutation_backend())
+  {
+    refuse(application_state_projection_error_code::journal_binding_mismatch,
+           "historical application journal belongs to another request");
+  }
+}
+
+struct projected_application_state final {
+  snapshot state;
+  pkgapply::lease_bound_state_projection projection;
+};
+
+projected_application_state project_application_state(
+    const pkgapply::package_application_request& request,
+    const pkgapply::mutation_lease_instance_identity& projection_lease,
+    const canonical_store& store)
+{
+  snapshot current = store.read();
+
+  const pkgplan::operation_preconditions& required = preconditions(request);
+  if (required.target() != request.target().target())
+  {
+    refuse(application_state_projection_error_code::request_binding_mismatch,
+           "application request target differs from accepted plan");
+  }
+
+  const state_target_binding& binding = current.target_binding();
+  if (binding.managed_target().string() !=
+          request.target().managed_target().string() ||
+      binding.root_view().string() != request.target().root_view().string())
+  {
+    refuse(application_state_projection_error_code::target_binding_mismatch,
+           "canonical state belongs to another application target");
+  }
+
+  const auto planner_snapshot =
+      translate_identity<pkgplan::installed_state_snapshot_identity>(
+          current.identity());
+  if (planner_snapshot != required.installed_snapshot())
+  {
+    refuse(application_state_projection_error_code::expected_snapshot_mismatch,
+           "canonical state differs from the accepted installed snapshot");
+  }
+
+  const auto planner_ownership =
+      translate_identity<pkgplan::ownership_inventory_identity>(
+          current.ownership_identity());
+  if (planner_ownership != required.ownership_inventory())
+  {
+    refuse(application_state_projection_error_code::ownership_inventory_mismatch,
+           "canonical ownership differs from the accepted inventory");
+  }
+
+  std::vector<pkgapply::projected_path_owners> paths;
+  paths.reserve(required.paths().size());
+  for (const auto& required_path : required.paths())
+  {
+    std::vector<pkgplan::installed_package_identity> owners;
+    for (const installed_package* owner :
+         current.owners(translate_path(required_path.path())))
+    {
+      owners.push_back(
+          translate_identity<pkgplan::installed_package_identity>(
+              owner->identity()));
+    }
+    std::sort(owners.begin(), owners.end());
+    if (owners != required_path.owners())
+    {
+      refuse(application_state_projection_error_code::path_owners_mismatch,
+             "canonical path owners differ from accepted plan");
+    }
+    paths.emplace_back(required_path.path(), std::move(owners));
+  }
+
+  const auto evidence = identify_evidence(
+      request, projection_lease, current, paths);
+  auto projection = pkgapply::lease_bound_state_projection::make(
+      projection_lease, planner_snapshot, planner_ownership,
+      pkgapply::state_projection_completeness::complete,
+      std::move(paths), evidence);
+
+  return {std::move(current), std::move(projection)};
 }
 
 void validate_lease_before_read(
@@ -239,73 +332,30 @@ lease_bound_application_state read_application_state(
     const canonical_store& store)
 {
   validate_lease_before_read(request, lease);
-  snapshot current = store.read();
-  require_lease_still_held(lease);
-
-  const pkgplan::operation_preconditions& required = preconditions(request);
-  if (required.target() != request.target().target())
-  {
-    refuse(application_state_projection_error_code::request_binding_mismatch,
-           "application request target differs from accepted plan");
-  }
-
-  const state_target_binding& binding = current.target_binding();
-  if (binding.managed_target().string() !=
-          request.target().managed_target().string() ||
-      binding.root_view().string() != request.target().root_view().string())
-  {
-    refuse(application_state_projection_error_code::target_binding_mismatch,
-           "canonical state belongs to another application target");
-  }
-
-  const auto planner_snapshot =
-      translate_identity<pkgplan::installed_state_snapshot_identity>(
-          current.identity());
-  if (planner_snapshot != required.installed_snapshot())
-  {
-    refuse(application_state_projection_error_code::expected_snapshot_mismatch,
-           "canonical state differs from the accepted installed snapshot");
-  }
-
-  const auto planner_ownership =
-      translate_identity<pkgplan::ownership_inventory_identity>(
-          current.ownership_identity());
-  if (planner_ownership != required.ownership_inventory())
-  {
-    refuse(application_state_projection_error_code::ownership_inventory_mismatch,
-           "canonical ownership differs from the accepted inventory");
-  }
-
-  std::vector<pkgapply::projected_path_owners> paths;
-  paths.reserve(required.paths().size());
-  for (const auto& required_path : required.paths())
-  {
-    std::vector<pkgplan::installed_package_identity> owners;
-    for (const installed_package* owner :
-         current.owners(translate_path(required_path.path())))
-    {
-      owners.push_back(
-          translate_identity<pkgplan::installed_package_identity>(
-              owner->identity()));
-    }
-    std::sort(owners.begin(), owners.end());
-    if (owners != required_path.owners())
-    {
-      refuse(application_state_projection_error_code::path_owners_mismatch,
-             "canonical path owners differ from accepted plan");
-    }
-    paths.emplace_back(required_path.path(), std::move(owners));
-  }
-
-  const auto evidence = identify_evidence(request, lease, current, paths);
-  auto projection = pkgapply::lease_bound_state_projection::make(
-      lease.identity(), planner_snapshot, planner_ownership,
-      pkgapply::state_projection_completeness::complete,
-      std::move(paths), evidence);
-
+  auto projected = project_application_state(request, lease.identity(), store);
   require_lease_still_held(lease);
   return lease_bound_application_state(
-      std::move(current), std::move(projection));
+      std::move(projected.state), std::move(projected.projection));
+}
+
+lease_bound_application_state read_historical_application_state(
+    const pkgapply::package_application_request& request,
+    const pkgapply::application_journal_header& journal,
+    const pkgapply::target_mutation_lease& lease,
+    const canonical_store& store)
+{
+  validate_lease_before_read(request, lease);
+  validate_journal_binding(request, journal);
+  auto projected = project_application_state(request, journal.lease(), store);
+  require_lease_still_held(lease);
+  if (projected.projection.identity() != journal.state_projection())
+  {
+    refuse(
+        application_state_projection_error_code::historical_projection_mismatch,
+        "reconstructed historical projection differs from application journal");
+  }
+  return lease_bound_application_state(
+      std::move(projected.state), std::move(projected.projection));
 }
 
 } // namespace pkgstate::apply_adapter
