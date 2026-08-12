@@ -1,6 +1,6 @@
 # History
 
-## 3.1.0 (2026-08-11)
+## 3.1.0 (2026-08-12)
 
 - Kept state projection strictly present-tense: `read_application_state()`
   observes canonical state only under the caller's current mutation lease.
@@ -11,6 +11,8 @@
 - Removed the former historical-read API and its reconstruction-specific refusal
   categories. Missing or invalid historical projection evidence fails at the
   journal owner boundary instead.
+- Aligned release qualification with `libpkgresolve` 3.0 and pinned the
+  canonical `meson.options` and ATX Markdown source conventions.
 
 ## 3.0.0 (2026-08-04)
 

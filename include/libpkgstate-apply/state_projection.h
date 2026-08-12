@@ -79,12 +79,12 @@ class PKGSTATE_APPLY_API lease_bound_application_state final {
 public:
   /*!
    * \brief Return the exact canonical snapshot read under the lease.
-  *  \return The exact canonical snapshot read under the lease.
+  * \return The exact canonical snapshot read under the lease.
    */
   [[nodiscard]] const snapshot& state() const noexcept;
   /*!
    * \brief Return the matching application-owned path-owner projection.
-  *  \return The matching application-owned path-owner projection.
+  * \return The matching application-owned path-owner projection.
    */
   [[nodiscard]] const pkgapply::lease_bound_state_projection&
   projection() const noexcept;

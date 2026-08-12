@@ -124,6 +124,7 @@ if get_option('tests').allowed()
   foreach contract : [
     'architecture',
     'documentation',
+    'documentation_source',
     'release_metadata',
     'repository',
     'extraction',

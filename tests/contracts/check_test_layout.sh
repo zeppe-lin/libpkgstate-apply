@@ -40,3 +40,12 @@ for suite in unit integration header contract; do
   grep -F "suite: '$suite'" "$root/tests/meson.build" >/dev/null ||
     fail "$suite suite is not registered"
 done
+
+for contract in "$root"/tests/contracts/check_*.sh; do
+  name=${contract##*/check_}
+  name=${name%.sh}
+  if ! grep -F "'$name'" "$root/tests/meson.build" >/dev/null &&
+     ! grep -F "check_${name}.sh" "$root/tests/meson.build" >/dev/null; then
+    fail "unregistered contract: check_${name}.sh"
+  fi
+done

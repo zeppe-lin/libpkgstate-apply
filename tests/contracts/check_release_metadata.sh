@@ -6,7 +6,7 @@ fail(){ echo "release-metadata: $*" >&2; exit 1; }
 grep -F "version: '3.1.0'" "$root/meson.build" >/dev/null || fail 'version is not 3.1.0'
 grep -F "soversion: '3'" "$root/src/meson.build" >/dev/null || fail 'SONAME generation is wrong'
 grep -F 'PROJECT_NUMBER         = 3.1.0' "$root/Doxyfile" >/dev/null || fail 'Doxygen version is wrong'
-grep -F '## 3.1.0' "$root/HISTORY.md" >/dev/null || fail 'history omits 3.1.0 release'
+grep -F '## 3.1.0 (2026-08-12)' "$root/HISTORY.md" >/dev/null || fail 'history omits dated 3.1.0 release'
 grep -F "'libpkgstate'" "$root/meson.build" >/dev/null || fail 'missing dependency libpkgstate'
 grep -F "version: '>=3.0.0'" "$root/meson.build" >/dev/null || fail 'missing floor libpkgstate >=3.0.0'
 grep -F "'libpkgapply'" "$root/meson.build" >/dev/null || fail 'missing dependency libpkgapply'

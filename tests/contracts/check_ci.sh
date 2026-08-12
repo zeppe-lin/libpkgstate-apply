@@ -35,7 +35,7 @@ require_pin()
 require_pin libpkgsource v3.0.1
 require_pin libpkgimage v0.4.0
 require_pin libpkgcatalog v3.0.1
-require_pin libpkgresolve v2.0.0
+require_pin libpkgresolve v3.0.0
 require_pin libpkgbuild v3.0.0
 require_pin libpkgplan v0.3.1
 require_pin libpkgbuild-image v1.0.0
@@ -65,3 +65,5 @@ grep -F 'html: enabled' "$root/.github/workflows/ci.yml" >/dev/null || fail 'GCC
 grep -F 'pandoc' "$root/.github/workflows/ci.yml" >/dev/null || fail 'Pandoc qualification dependency is absent'
 grep -F -- '-Dhtml_docs=' "$root/.github/workflows/ci.yml" >/dev/null || fail 'HTML Meson feature is not configured'
 grep -F 'qualify-html-docs.sh' "$root/.github/workflows/ci.yml" >/dev/null || fail 'installed HTML qualification is absent'
+[ "$(pin_count libpkgresolve v2.0.0)" -eq 0 ] ||
+  fail 'retired resolver 2 qualification pin remains'
