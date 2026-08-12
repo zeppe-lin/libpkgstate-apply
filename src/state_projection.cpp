@@ -176,22 +176,6 @@ pkgapply::state_projection_evidence_identity identify_evidence(
   return pkgapply::state_projection_evidence_identity::parse(value);
 }
 
-void validate_journal_binding(
-    const pkgapply::package_application_request& request,
-    const pkgapply::application_journal_header& journal)
-{
-  if (journal.kind() != request.kind() ||
-      journal.request() != request.identity() ||
-      journal.plan() != request.plan() ||
-      journal.target() != request.target().identity() ||
-      journal.control() != request.control().identity() ||
-      journal.backend() != request.target().mutation_backend())
-  {
-    refuse(application_state_projection_error_code::journal_binding_mismatch,
-           "historical application journal belongs to another request");
-  }
-}
-
 struct projected_application_state final {
   snapshot state;
   pkgapply::lease_bound_state_projection projection;
@@ -339,27 +323,5 @@ lease_bound_application_state read_application_state(
       std::move(projected.state), std::move(projected.projection));
 }
 
-lease_bound_application_state read_historical_application_state(
-    const pkgapply::package_application_request& request,
-    const pkgapply::application_journal_header& journal,
-    const pkgapply::target_mutation_lease& lease,
-    const canonical_store& store)
-{
-  validate_lease_before_read(request, lease);
-  validate_journal_binding(request, journal);
-  snapshot current = store.read();
-  require_lease_still_held(lease);
-  auto projected =
-      project_application_state(request, journal.lease(), std::move(current));
-  require_lease_still_held(lease);
-  if (projected.projection.identity() != journal.state_projection())
-  {
-    refuse(
-        application_state_projection_error_code::historical_projection_mismatch,
-        "reconstructed historical projection differs from application journal");
-  }
-  return lease_bound_application_state(
-      std::move(projected.state), std::move(projected.projection));
-}
 
 } // namespace pkgstate::apply_adapter

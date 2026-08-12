@@ -15,3 +15,16 @@ grep -F 'It does not depend
 on' "$root/docs/architecture.md" >/dev/null || fail 'mechanism non-dependency is undocumented'
 grep -F '`libpkgapply-posix`' "$root/docs/architecture.md" >/dev/null || fail 'mechanism provider name is undocumented'
 if grep -R -F 'catch (const std::exception' "$root/src" >/dev/null; then fail 'adapter launders unrelated process failures through std::exception'; fi
+
+# Historical application projection belongs to the libpkgapply journal. This
+# adapter may observe only current canonical state under the current lease.
+if grep -R -F 'read_historical_application_state' "$root/include" "$root/src" >/dev/null; then
+  fail 'historical application-state reconstruction API remains'
+fi
+if grep -R -F 'historical_projection_mismatch' "$root/include" "$root/src" >/dev/null; then
+  fail 'historical reconstruction refusal remains in current-state adapter'
+fi
+grep -F 'Restart does not ask this adapter to reproduce historical projection truth.' "$root/docs/architecture.md" >/dev/null ||
+  fail 'current-state versus historical-evidence boundary is undocumented'
+grep -F 'performs exactly one store' "$root/include/libpkgstate-apply/state_projection.h" >/dev/null ||
+  fail 'current state read no longer pins one live observation'

@@ -39,14 +39,13 @@ target drift, state drift, incomplete ownership, or identity translation
 failure is exported as a typed refusal. Native store failures remain native
 `store_error` failures.
 
-`read_historical_application_state()` is the restart counterpart for the
-crash window after physical completion but before canonical publication. A
-newly held lease guards the canonical-state read, while the projection itself
-is reconstructed with the historical lease identity retained by the durable
-application journal header. Request, plan, target, control, and backend must
-match the journal, and the reconstructed projection identity must equal the
-journal's admitted projection. The adapter therefore preserves completed
-evidence binding without pretending the new lease is the original lease.
+Restart does not ask this adapter to reproduce historical projection truth.
+The durable libpkgapply application journal owns the exact projection body that
+was admitted before mutation. A restart may call `read_application_state()`
+under a newly held lease to answer the present-tense question whether canonical
+state still matches the admitted pre-state; that current observation is never
+combined with historical lease identity to manufacture old evidence. Missing or
+invalid historical projection evidence is a libpkgapply journal failure.
 
 ## Completed-application admission
 

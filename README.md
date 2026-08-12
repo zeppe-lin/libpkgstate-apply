@@ -14,11 +14,11 @@ evidence and state-owned publication authority. It is a translation boundary,
 not another semantic owner. Its input and output models remain authoritative in
 their respective repositories.
 
-The live read accepts a caller-owned target lease. Restart-time historical
-reconstruction additionally accepts the durable application journal header and
-a newly held lease, re-derives the original projection from canonical pre-state,
-and refuses unless it reproduces the journal-bound projection exactly. The
-publication adapter then accepts the exact operation request and completed
+The state read accepts a caller-owned target lease and reports only current
+canonical truth observed under that lease. Historical application projection
+evidence is owned durably by the `libpkgapply` application journal; this adapter
+never re-derives an old projection from current state plus historical identity.
+The publication adapter then accepts the exact operation request and completed
 application evidence. A successful projection retains the exact
 expected state epoch, path-owner projection, request-bound build-image
 authority, complete object consequences, optional transaction evidence, and one

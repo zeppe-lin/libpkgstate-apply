@@ -2,12 +2,15 @@
 
 ## 3.1.0 (2026-08-11)
 
-- Added restart-time reconstruction of the exact historical lease-bound
-  application-state projection recorded by a durable application journal.
-- Kept SONAME generation 3: the new API is additive and preserves the 3.0 ABI.
-- Reconstruction reads canonical pre-state under a newly held lease but hashes
-  the historical lease identity, then refuses unless the resulting projection
-  identity exactly matches the journal header.
+- Kept state projection strictly present-tense: `read_application_state()`
+  observes canonical state only under the caller's current mutation lease.
+- Removed restart-time historical projection reconstruction. Durable
+  application journals now retain the exact admitted projection body in
+  `libpkgapply`; this adapter does not manufacture old evidence from a current
+  snapshot and historical lease identity.
+- Removed the former historical-read API and its reconstruction-specific refusal
+  categories. Missing or invalid historical projection evidence fails at the
+  journal owner boundary instead.
 
 ## 3.0.0 (2026-08-04)
 
