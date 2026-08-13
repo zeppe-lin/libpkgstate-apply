@@ -1,0 +1,57 @@
+.\" Generated from docs/man/libpkgstate-apply.3.md; do not edit.
+.\"
+.TH "LIBPKGSTATE\-APPLY" "3" "" "libpkgstate\-apply" "Version 3.1.0"
+.SH NAME
+libpkgstate\-apply \- admit completed native application as installed state
+.SH SYNOPSIS
+\f[B]#include <libpkgstate\-apply/state_projection.h>\f[R]
+.PP
+\f[B]#include <libpkgstate\-apply/adapter.h>\f[R]
+.SH DESCRIPTION
+\f[B]project_completed_application()\f[R] validates one completed native \f[B]libpkgapply\f[R] operation against the exact operation\-specific request, accepted plan, target context, lease\-bound state projection, expected native snapshot, ownership universe, and completed path consequences.
+It returns an immutable \f[B]state_publication_request\f[R] and performs no store I/O.
+.PP
+Additive overloads accept one exact \f[B]transaction_evidence_identity\f[R].
+When supplied, transaction evidence is retained by the publication request and, for installation or upgrade, by the durable installation receipt.
+The same evidence is supplied to both objects during construction; it is never attached after projection.
+.SH LEASE\-BOUND STATE READ
+\f[B]read_application_state()\f[R] accepts one exact \f[B]package_application_request\f[R], one caller\-owned \f[B]target_mutation_lease\f[R], and one \f[B]canonical_store\f[R].
+It first proves that the lease is live and belongs to the request target and exclusion domain, then performs exactly one canonical store read.
+The returned \f[B]lease_bound_application_state\f[R] owns both the storage\-derived \f[B]snapshot\f[R] and the matching \f[B]lease_bound_state_projection\f[R] so they cannot be paired with different state epochs.
+.PP
+The projection contains the accepted plan\[aq]s exact path universe and the current installed owners derived from the canonical snapshot.
+It is complete only when the snapshot identity, ownership inventory, target binding, and every path\-owner set agree with the accepted plan.
+Projection evidence is derived canonically from the request, target, lease acquisition, target binding, state epoch, ownership inventory, and path\-owner closure.
+A caller does not supply that evidence identity.
+.PP
+The lease is checked before and after the state read and again before return.
+A lost or foreign lease is a typed projection refusal.
+Store read failures retain their native \f[B]store_error\f[R] classification.
+The function does not acquire a lease, initialize a store, inspect the target filesystem, perform application, publish state, reconcile, or repair.
+.PP
+Restart\-time historical projection is not reconstructed by this boundary.
+The durable \f[B]libpkgapply\f[R] application journal owns the exact projection admitted before mutation.
+A caller may use \f[B]read_application_state()\f[R] under a newly held lease only to observe current canonical pre\-state; that current observation is never rebased onto an old lease identity.
+.SH INCOMING AUTHORITY
+Installation and upgrade requests retain an \f[B]incoming_package_authority\f[R] that contains one complete \f[B]libpkgbuild\-plan\f[R] projection.
+That projection retains the exact \f[B]libpkgbuild\-image\f[R] admission together with source\-derived candidate and artifact facts established before mutation.
+.PP
+The adapter passes the retained build\-image authority directly through \f[B]libpkgstate\-build\f[R].
+That boundary derives the state source record and build provenance from the exact sealed source, resolver\-backed request, successful build result, and independently inspected image.
+It accepts no separate caller\-supplied source, build result, image, or provenance value and never reconstructs build provenance from planner facts.
+.PP
+Installation additionally takes one typed initial installation reason.
+Upgrade preserves the prior installed reason.
+Removal accepts no incoming package or installation reason.
+.SH OWNERSHIP
+Complete object metadata comes from completed application evidence.
+Active origin comes from the accepted active outcome.
+Rejected\-object identity and side come from durable completed rejected\-object evidence.
+Publication fails when an owned path lacks complete publication\-eligible object truth or when application evidence grants unplanned ownership.
+.SH IDENTITY
+Planner and application identities are translated into typed state references.
+State\-owned installed control, receipt, package, snapshot, request, and publication identities are computed by \f[B]libpkgstate\f[R].
+.PP
+The overloads without transaction evidence remain authoritative for operations outside an effectful transaction session and preserve their existing identity semantics.
+.SH SEE ALSO
+\f[B]libpkgapply\f[R](3), \f[B]libpkgbuild\-image\f[R](3), \f[B]libpkgbuild\-plan\f[R](3), \f[B]libpkgstate\-source\f[R](3), \f[B]libpkgstate\-build\f[R](3), \f[B]pkgstate_installation_receipt\f[R](3), \f[B]pkgstate_publication\f[R](3)

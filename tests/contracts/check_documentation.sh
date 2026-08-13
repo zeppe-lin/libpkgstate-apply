@@ -45,8 +45,8 @@ catalog_include=$(resolve_include libpkgcatalog "$catalog_include")
 
 for file in \
   README.md HISTORY.md CONTRIBUTING.md MAINTAINING.md Doxyfile \
-  docs/architecture.md docs/integration.md docs/testing.md docs/abi.md \
-  docs/code-style.md docs/meson.build man/libpkgstate-apply.3.scdoc; do
+  DESIGN.md docs/integration.md TESTING.md docs/abi.md \
+  docs/code-style.md docs/meson.build docs/man/libpkgstate-apply.3.md; do
   [ -s "$root/$file" ] || fail "missing $file"
 done
 python3 "$root/tools/check-public-documentation.py" \
@@ -68,7 +68,5 @@ if command -v clang++ >/dev/null 2>&1; then
     --namespace pkgstate --clang "$(command -v clang++)"
 fi
 
-python3 "$root/tools/check-man-markdown.py" \
-  --root "$root" --project libpkgstate-apply --version 3.1.0
 python3 "$root/tools/check-html-manifest.py" \
   --root "$root" --project libpkgstate-apply

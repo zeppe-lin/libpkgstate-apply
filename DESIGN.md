@@ -1,5 +1,4 @@
-# Architecture
-
+# libpkgstate-apply design
 ## Authority flow
 
 Contract shorthand:

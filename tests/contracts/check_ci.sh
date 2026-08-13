@@ -33,7 +33,7 @@ require_pin()
     fail "dependency pin is not exact in both matrices: $repository $ref"
 }
 require_pin libpkgsource v3.0.1
-require_pin libpkgimage v0.4.0
+require_pin libpkgimage v0.4.1
 require_pin libpkgcatalog v3.0.1
 require_pin libpkgresolve v3.0.0
 require_pin libpkgbuild v3.0.0

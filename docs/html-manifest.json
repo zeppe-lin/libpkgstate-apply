@@ -27,9 +27,9 @@
       "title": "ABI policy"
     },
     {
-      "source": "docs/architecture.md",
-      "output": "architecture.html",
-      "title": "Architecture"
+      "source": "DESIGN.md",
+      "output": "design.html",
+      "title": "libpkgstate-apply design"
     },
     {
       "source": "docs/code-style.md",
@@ -62,9 +62,9 @@
       "title": "Manual-page Markdown"
     },
     {
-      "source": "docs/testing.md",
+      "source": "TESTING.md",
       "output": "testing.html",
-      "title": "Testing"
+      "title": "Testing libpkgstate-apply"
     }
   ]
 }

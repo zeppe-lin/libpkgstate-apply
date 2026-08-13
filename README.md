@@ -31,7 +31,7 @@ of the contract above. It exports refusal rather than guessing. It refuses
 lease, request, plan, target, state, ownership, package, path, incoming
 authority, identity, or publication construction mismatch.
 
-See `docs/architecture.md` for invariants and `docs/integration.md` for
+See `DESIGN.md` for invariants and `docs/integration.md` for
 placement in the package-management graph.
 
 ## Dependency boundary
@@ -77,11 +77,11 @@ repository-separated `libpkgapply` 3.0 generation.
 
 ## Documentation
 
-- `docs/architecture.md` — authority and refusal invariants;
+- `DESIGN.md` — authority and refusal invariants;
 - `docs/integration.md` — composition and release order;
-- `docs/testing.md` — qualification matrix;
+- `TESTING.md` — qualification matrix;
 - `docs/abi.md` — ABI and pkg-config policy;
-- `man/libpkgstate-apply.3.scdoc` — installed `libpkgstate-apply.3` interface
+- `docs/man/libpkgstate-apply.3.md` — installed `libpkgstate-apply.3` interface
   manual;
 - `MAINTAINING.md` — release gate.
 

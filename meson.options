@@ -20,7 +20,7 @@ option(
   'man_pages',
   type: 'feature',
   value: 'auto',
-  description: 'Build the manual page with scdoc',
+  description: 'Install the committed generated manual page',
 )
 
 option(

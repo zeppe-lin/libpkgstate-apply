@@ -5,9 +5,11 @@ documentation_dir = get_option('datadir') / 'doc' / meson.project_name()
 
 install_data(
   '../CONTRIBUTING.md',
+  '../DESIGN.md',
   '../HISTORY.md',
   '../MAINTAINING.md',
   '../README.md',
+  '../TESTING.md',
   '../COPYING',
   '../COPYRIGHT',
   install_dir: documentation_dir,
@@ -16,12 +18,10 @@ install_data(
 
 install_data(
   'abi.md',
-  'architecture.md',
   'code-style.md',
   'html.md',
   'integration.md',
   'manpage-markdown.md',
-  'testing.md',
   install_dir: documentation_dir,
   install_tag: 'doc',
 )
@@ -46,6 +46,8 @@ install_data(
   install_tag: 'doc',
 )
 
+subdir('man')
+
 html_docs_enabled = get_option('html_docs').enabled()
 html_docs_target = []
 html_docs_output_dir = ''
@@ -65,16 +67,16 @@ if html_docs_enabled
   )
   html_docs_sources = files(
     '../CONTRIBUTING.md',
+    '../DESIGN.md',
     '../HISTORY.md',
     '../MAINTAINING.md',
     '../README.md',
+    '../TESTING.md',
     'abi.md',
-    'architecture.md',
     'code-style.md',
     'html.md',
     'integration.md',
     'manpage-markdown.md',
-    'testing.md',
     'history/3.0-extraction.md',
     'history/libpkgstate-2.5.1-origin.sha256',
     'man/libpkgstate-apply.3.md',
@@ -87,8 +89,8 @@ if html_docs_enabled
     '../tools/build-html-docs.py',
     '../tools/check-html-docs.py',
     '../tools/install-html-docs.py',
-    '../tools/render-man-markdown.py',
-    '../tools/check-man-markdown.py',
+    '../tools/update-man-pages.sh',
+    '../tools/canonicalize-man-roff.awk',
     '../include/libpkgstate-apply/adapter.h',
     '../include/libpkgstate-apply/export.h',
     '../include/libpkgstate-apply/libpkgstate-apply.h',

@@ -130,6 +130,8 @@ if get_option('tests').allowed()
     'extraction',
     'ci',
     'test_layout',
+    'manpage_normalizer',
+    'manpage_source',
   ]
     contract_args = [
       join_paths(meson.current_source_dir(), 'contracts/check_' + contract + '.sh'),
@@ -157,6 +159,21 @@ if get_option('tests').allowed()
       suite: 'contract',
     )
   endforeach
+
+  pandoc = find_program('pandoc', required: false)
+  if pandoc.found()
+    test(
+      'contract generated manpages',
+      sh,
+      args: [
+        join_paths(meson.current_source_dir(), 'contracts/check_manpage_generated.sh'),
+        meson.project_source_root(),
+        pandoc.full_path(),
+      ],
+      suite: 'contract',
+    )
+  endif
+
   test(
     'style-contract',
     sh,

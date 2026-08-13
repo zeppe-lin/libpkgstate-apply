@@ -40,11 +40,11 @@ jobs:
           repository: zeppe-lin/libpkgsource
           ref: v3.0.1
           path: dependencies/libpkgsource
-      - name: Check out libpkgimage 0.4.0
+      - name: Check out libpkgimage 0.4.1
         uses: actions/checkout@v4
         with:
           repository: zeppe-lin/libpkgimage
-          ref: v0.4.0
+          ref: v0.4.1
           path: dependencies/libpkgimage
       - name: Check out libpkgcatalog 3.0.1
         uses: actions/checkout@v4
@@ -138,7 +138,6 @@ jobs:
             ninja-build \
             pkg-config \
             python3-venv \
-            scdoc \
             zlib1g-dev
           python3 -m venv "$RUNNER_TEMP/meson"
           "$RUNNER_TEMP/meson/bin/pip" install 'meson==1.10.2'
@@ -168,7 +167,7 @@ jobs:
         run: ./ci/qualify-installed.sh build "${{ matrix.mode }}"
       - name: Qualify installed HTML documentation
         if: matrix.html == 'enabled'
-        run: ./ci/qualify-html-docs.sh build libpkgstate-apply 3.0.0
+        run: ./ci/qualify-html-docs.sh build libpkgstate-apply 3.1.0
 
   sanitizers:
     name: ${{ matrix.name }} sanitizers
@@ -194,11 +193,11 @@ jobs:
           repository: zeppe-lin/libpkgsource
           ref: v3.0.1
           path: dependencies/libpkgsource
-      - name: Check out libpkgimage 0.4.0
+      - name: Check out libpkgimage 0.4.1
         uses: actions/checkout@v4
         with:
           repository: zeppe-lin/libpkgimage
-          ref: v0.4.0
+          ref: v0.4.1
           path: dependencies/libpkgimage
       - name: Check out libpkgcatalog 3.0.1
         uses: actions/checkout@v4

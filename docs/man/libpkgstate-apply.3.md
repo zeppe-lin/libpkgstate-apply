@@ -1,7 +1,5 @@
 % LIBPKGSTATE-APPLY(3) libpkgstate-apply | Version 3.1.0
 
-<!-- Generated from libpkgstate-apply.3.scdoc; do not edit. -->
-
 
 # NAME
 

@@ -1,6 +1,6 @@
 # Contributing
 
-Changes must preserve the authority contract in `docs/architecture.md`:
+Changes must preserve the authority contract in `DESIGN.md`:
 `lease-bound canonical state + completed application -> state_publication_request`.
 
 Do not move endpoint authority, orchestration, policy selection, discovery,
