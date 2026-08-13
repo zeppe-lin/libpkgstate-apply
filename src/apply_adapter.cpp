@@ -260,8 +260,9 @@ owned_object_kind translate_object_kind(pkgapply::completed_object_kind kind)
     case pkgapply::completed_object_kind::other:
       return owned_object_kind::other;
   }
-  throw projection_error(projection_error_code::completed_path_mismatch,
-                         "completed path has invalid object kind");
+  throw projection_error(
+      projection_error_code::completed_path_mismatch,
+      "completed path has invalid object kind");
 }
 
 
@@ -549,8 +550,9 @@ state_publication_request construct_installation(
   const auto& publication = request.plan().publication();
   if (expected_state.find_package(publication.release().name()) != nullptr)
   {
-    throw projection_error(projection_error_code::package_state_mismatch,
-                           "installation package is already present in state");
+    throw projection_error(
+        projection_error_code::package_state_mismatch,
+        "installation package is already present in state");
   }
 
   installed_package proposed = construct_installed_package(

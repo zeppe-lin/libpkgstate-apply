@@ -56,7 +56,7 @@ public:
 
   /*!
    * \brief Return the stable refusal category.
-  *  \return The stable refusal category.
+   * \return The stable refusal category.
    */
   [[nodiscard]] projection_error_code code() const noexcept;
 

@@ -1,4 +1,5 @@
 # Testing libpkgstate-apply
+
 Qualification is layered so one successful application/state projection cannot
 hide a damaged evidence seam, publication rule, package boundary, or test
 harness.

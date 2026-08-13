@@ -79,12 +79,12 @@ class PKGSTATE_APPLY_API lease_bound_application_state final {
 public:
   /*!
    * \brief Return the exact canonical snapshot read under the lease.
-  * \return The exact canonical snapshot read under the lease.
+   * \return The exact canonical snapshot read under the lease.
    */
   [[nodiscard]] const snapshot& state() const noexcept;
   /*!
    * \brief Return the matching application-owned path-owner projection.
-  * \return The matching application-owned path-owner projection.
+   * \return The matching application-owned path-owner projection.
    */
   [[nodiscard]] const pkgapply::lease_bound_state_projection&
   projection() const noexcept;
@@ -92,9 +92,10 @@ public:
 private:
   /*! \brief Construct through read_application_state(). */
   friend PKGSTATE_APPLY_API lease_bound_application_state
-  read_application_state(const pkgapply::package_application_request&,
-                         const pkgapply::target_mutation_lease&,
-                         const canonical_store&);
+  read_application_state(
+      const pkgapply::package_application_request&,
+      const pkgapply::target_mutation_lease&,
+      const canonical_store&);
 
   lease_bound_application_state(
       snapshot state,
@@ -125,9 +126,9 @@ private:
  * \throws store_error when the canonical store cannot be read.
  */
 [[nodiscard]] PKGSTATE_APPLY_API lease_bound_application_state
-read_application_state(const pkgapply::package_application_request& request,
-                       const pkgapply::target_mutation_lease& lease,
-                       const canonical_store& store);
-
+read_application_state(
+    const pkgapply::package_application_request& request,
+    const pkgapply::target_mutation_lease& lease,
+    const canonical_store& store);
 
 } // namespace pkgstate::apply_adapter

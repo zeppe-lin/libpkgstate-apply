@@ -21,8 +21,9 @@
 namespace pkgstate::apply_adapter {
 namespace {
 
-[[noreturn]] void refuse(application_state_projection_error_code code,
-                         const char* message)
+[[noreturn]] void refuse(
+    application_state_projection_error_code code,
+    const char* message)
 {
   throw application_state_projection_error(code, message);
 }
@@ -67,8 +68,9 @@ const pkgplan::operation_preconditions& preconditions(
     return upgrade->plan().preconditions();
   if (const auto* removal = request.removal())
     return removal->plan().preconditions();
-  refuse(application_state_projection_error_code::request_binding_mismatch,
-         "application request has no operation body");
+  refuse(
+      application_state_projection_error_code::request_binding_mismatch,
+      "application request has no operation body");
 }
 
 class evidence_record final {
@@ -101,8 +103,9 @@ public:
   void append_bytes(std::string_view value)
   {
     append_u64(static_cast<std::uint64_t>(value.size()));
-    append_raw(reinterpret_cast<const std::uint8_t*>(value.data()),
-               value.size());
+    append_raw(
+        reinterpret_cast<const std::uint8_t*>(value.data()),
+        value.size());
   }
 
   [[nodiscard]] std::array<std::uint8_t, 32> sha256() const
@@ -111,14 +114,18 @@ public:
         std::unique_ptr<EVP_MD_CTX, decltype(&EVP_MD_CTX_free)>;
     context_ptr context(EVP_MD_CTX_new(), EVP_MD_CTX_free);
     if (!context)
-      refuse(application_state_projection_error_code::evidence_construction,
-             "could not allocate application state evidence digest");
+    {
+      refuse(
+          application_state_projection_error_code::evidence_construction,
+          "could not allocate application state evidence digest");
+    }
 
     if (EVP_DigestInit_ex(context.get(), EVP_sha256(), nullptr) != 1 ||
         EVP_DigestUpdate(context.get(), bytes_.data(), bytes_.size()) != 1)
     {
-      refuse(application_state_projection_error_code::evidence_construction,
-             "could not hash application state projection evidence");
+      refuse(
+          application_state_projection_error_code::evidence_construction,
+          "could not hash application state projection evidence");
     }
 
     std::array<std::uint8_t, 32> result{};
@@ -126,8 +133,9 @@ public:
     if (EVP_DigestFinal_ex(context.get(), result.data(), &size) != 1 ||
         size != result.size())
     {
-      refuse(application_state_projection_error_code::evidence_construction,
-             "could not finalize application state projection evidence");
+      refuse(
+          application_state_projection_error_code::evidence_construction,
+          "could not finalize application state projection evidence");
     }
     return result;
   }
@@ -189,8 +197,9 @@ projected_application_state project_application_state(
   const pkgplan::operation_preconditions& required = preconditions(request);
   if (required.target() != request.target().target())
   {
-    refuse(application_state_projection_error_code::request_binding_mismatch,
-           "application request target differs from accepted plan");
+    refuse(
+        application_state_projection_error_code::request_binding_mismatch,
+        "application request target differs from accepted plan");
   }
 
   const state_target_binding& binding = current.target_binding();
@@ -198,8 +207,9 @@ projected_application_state project_application_state(
           request.target().managed_target().string() ||
       binding.root_view().string() != request.target().root_view().string())
   {
-    refuse(application_state_projection_error_code::target_binding_mismatch,
-           "canonical state belongs to another application target");
+    refuse(
+        application_state_projection_error_code::target_binding_mismatch,
+        "canonical state belongs to another application target");
   }
 
   const auto planner_snapshot =
@@ -207,8 +217,9 @@ projected_application_state project_application_state(
           current.identity());
   if (planner_snapshot != required.installed_snapshot())
   {
-    refuse(application_state_projection_error_code::expected_snapshot_mismatch,
-           "canonical state differs from the accepted installed snapshot");
+    refuse(
+        application_state_projection_error_code::expected_snapshot_mismatch,
+        "canonical state differs from the accepted installed snapshot");
   }
 
   const auto planner_ownership =
@@ -216,8 +227,9 @@ projected_application_state project_application_state(
           current.ownership_identity());
   if (planner_ownership != required.ownership_inventory())
   {
-    refuse(application_state_projection_error_code::ownership_inventory_mismatch,
-           "canonical ownership differs from the accepted inventory");
+    refuse(
+        application_state_projection_error_code::ownership_inventory_mismatch,
+        "canonical ownership differs from the accepted inventory");
   }
 
   std::vector<pkgapply::projected_path_owners> paths;
@@ -235,8 +247,9 @@ projected_application_state project_application_state(
     std::sort(owners.begin(), owners.end());
     if (owners != required_path.owners())
     {
-      refuse(application_state_projection_error_code::path_owners_mismatch,
-             "canonical path owners differ from accepted plan");
+      refuse(
+          application_state_projection_error_code::path_owners_mismatch,
+          "canonical path owners differ from accepted plan");
     }
     paths.emplace_back(required_path.path(), std::move(owners));
   }
@@ -256,21 +269,33 @@ void validate_lease_before_read(
     const pkgapply::target_mutation_lease& lease)
 {
   if (!lease.held())
-    refuse(application_state_projection_error_code::lease_not_held,
-           "target mutation lease is not held before state read");
+  {
+    refuse(
+        application_state_projection_error_code::lease_not_held,
+        "target mutation lease is not held before state read");
+  }
   if (lease.target() != request.target().identity())
-    refuse(application_state_projection_error_code::lease_target_mismatch,
-           "target mutation lease belongs to another application target");
+  {
+    refuse(
+        application_state_projection_error_code::lease_target_mismatch,
+        "target mutation lease belongs to another application target");
+  }
   if (lease.exclusion_domain() != request.target().mutation_exclusion_domain())
-    refuse(application_state_projection_error_code::lease_domain_mismatch,
-           "target mutation lease belongs to another exclusion domain");
+  {
+    refuse(
+        application_state_projection_error_code::lease_domain_mismatch,
+        "target mutation lease belongs to another exclusion domain");
+  }
 }
 
 void require_lease_still_held(const pkgapply::target_mutation_lease& lease)
 {
   if (!lease.held())
-    refuse(application_state_projection_error_code::lease_lost,
-           "target mutation lease was lost during state projection");
+  {
+    refuse(
+        application_state_projection_error_code::lease_lost,
+        "target mutation lease was lost during state projection");
+  }
 }
 
 } // namespace
@@ -322,6 +347,5 @@ lease_bound_application_state read_application_state(
   return lease_bound_application_state(
       std::move(projected.state), std::move(projected.projection));
 }
-
 
 } // namespace pkgstate::apply_adapter
