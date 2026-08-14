@@ -18,9 +18,18 @@ pin_count()
   repository=$1
   ref=$2
   awk -v repository="repository: zeppe-lin/$repository" -v ref="ref: $ref" '
-    index($0, repository) {
-      if ((getline next_line) > 0 && index(next_line, ref))
-        count++
+    {
+      line = $0
+      sub(/^[[:space:]]*/, "", line)
+      sub(/[[:space:]]*$/, "", line)
+    }
+    line == repository {
+      if ((getline next_line) > 0) {
+        sub(/^[[:space:]]*/, "", next_line)
+        sub(/[[:space:]]*$/, "", next_line)
+        if (next_line == ref)
+          count++
+      }
     }
     END { print count + 0 }
   ' "$workflow"
@@ -32,19 +41,19 @@ require_pin()
   [ "$(pin_count "$repository" "$ref")" -eq 2 ] ||
     fail "dependency pin is not exact in both matrices: $repository $ref"
 }
-require_pin libpkgsource v3.0.1
+require_pin libpkgsource v4.1.0
 require_pin libpkgimage v0.4.1
-require_pin libpkgcatalog v3.0.1
-require_pin libpkgresolve v3.0.0
-require_pin libpkgbuild v3.0.0
+require_pin libpkgcatalog v4.0.0
+require_pin libpkgresolve v4.0.0
+require_pin libpkgbuild v3.0.1
 require_pin libpkgplan v0.3.1
-require_pin libpkgbuild-image v1.0.0
-require_pin libpkgsource-plan v1.1.0
-require_pin libpkgbuild-plan v1.0.0
-require_pin libpkgapply v3.0.0
+require_pin libpkgbuild-image v1.0.1
+require_pin libpkgsource-plan v2.0.0
+require_pin libpkgbuild-plan v1.1.0
+require_pin libpkgapply v3.0.1
 require_pin libpkgstate v3.1.0
-require_pin libpkgstate-source v3.0.0
-require_pin libpkgstate-build v3.0.0
+require_pin libpkgstate-source v4.0.0
+require_pin libpkgstate-build v3.1.0
 require_pin libpkgstate-plan v3.0.0
 grep -F 'libpkgstate-build.so.1' "$root/ci/audit-shared-boundary.sh" >/dev/null || fail 'shared audit omits state-build authority'
 grep -F 'libpkgstate-plan.so.2' "$root/ci/audit-shared-boundary.sh" >/dev/null || fail 'shared audit omits state-plan translation'

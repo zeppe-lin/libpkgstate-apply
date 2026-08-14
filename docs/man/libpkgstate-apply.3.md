@@ -1,4 +1,4 @@
-% LIBPKGSTATE-APPLY(3) libpkgstate-apply | Version 3.1.0
+% LIBPKGSTATE-APPLY(3) libpkgstate-apply | Version 3.1.1
 
 
 # NAME

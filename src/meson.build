@@ -83,10 +83,10 @@ pkgconf.generate(
   subdirs: '.',
   requires: [
     'libpkgstate >= 3.0.0',
-    'libpkgapply >= 3.0.0',
+    'libpkgapply >= 3.0.1',
   ],
   requires_private: [
-    'libpkgstate-build >= 3.0.0',
+    'libpkgstate-build >= 3.1.0',
     'libpkgstate-plan >= 3.0.0',
     'libpkgplan >= 0.3.0',
     libcrypto_dep,

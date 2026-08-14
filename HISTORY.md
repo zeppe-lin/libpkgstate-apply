@@ -1,5 +1,15 @@
 # History
 
+## 3.1.1 (2026-08-14)
+
+- Bind private build projection to `libpkgstate-build >=3.1.0`, which closes
+  through `libpkgstate-source.so.2` and source ABI 4.
+- Move test authority to source 4, catalog 4, resolver 4, build 3.0.1,
+  source-plan 2, and build-plan 1.1 so qualification cannot reload source 3.
+- Require `libpkgapply >=3.0.1`, excluding application 3.0.0 whose
+  build-plan interval could still admit the source-3 closure.
+- Keep `libpkgstate-apply.so.3`; no public state-apply carrier changes.
+
 ## 3.1.0 (2026-08-12)
 
 - Kept state projection strictly present-tense: `read_application_state()`

@@ -12,7 +12,7 @@ explicit ABI decision before release.
 
 The pkg-config file is part of the installed contract. Public requirements are
 only those needed to compile installed declarations: `libpkgstate >=3.0.0` and
-`libpkgapply >=3.0.0`. Private requirements are `libpkgstate-build >=3.0.0`,
+`libpkgapply >=3.0.1`. Private requirements are `libpkgstate-build >=3.1.0`,
 `libpkgstate-plan >=3.0.0`, `libpkgplan >=0.3.0`, and `libcrypto`. Private
 requirements must not leak into ordinary shared-consumer flags, but they must
 appear in the static closure.

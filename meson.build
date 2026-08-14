@@ -4,7 +4,7 @@
 project(
   'libpkgstate-apply',
   'cpp',
-  version: '3.1.0',
+  version: '3.1.1',
   license: 'GPL-3.0-or-later',
   meson_version: '>=1.6.0',
   default_options: [
@@ -42,14 +42,14 @@ libpkgstate_dep = dependency(
 
 libpkgapply_dep = dependency(
   'libpkgapply',
-  version: '>=3.0.0',
+  version: '>=3.0.1',
   required: true,
   static: want_static,
 )
 
 libpkgstate_build_dep = dependency(
   'libpkgstate-build',
-  version: '>=3.0.0',
+  version: '>=3.1.0',
   required: true,
   static: want_static,
 )
@@ -76,28 +76,28 @@ libcrypto_dep = dependency(
 
 libpkgsource_test_dep = dependency(
   'libpkgsource',
-  version: '>=3.0.1',
+  version: ['>=4.0.0', '<5.0.0'],
   required: get_option('tests'),
   static: want_static,
 )
 
 libpkgsource_plan_test_dep = dependency(
   'libpkgsource-plan',
-  version: ['>=1.1.0', '<2.0.0'],
+  version: ['>=2.0.0', '<3.0.0'],
   required: get_option('tests'),
   static: want_static,
 )
 
 libpkgbuild_test_dep = dependency(
   'libpkgbuild',
-  version: ['>=3.0.0', '<4.0.0'],
+  version: ['>=3.0.1', '<4.0.0'],
   required: get_option('tests'),
   static: want_static,
 )
 
 libpkgstate_source_test_dep = dependency(
   'libpkgstate-source',
-  version: '>=3.0.0',
+  version: ['>=4.0.0', '<5.0.0'],
   required: get_option('tests'),
   static: want_static,
 )
@@ -111,28 +111,28 @@ libpkgimage_test_dep = dependency(
 
 libpkgbuild_image_test_dep = dependency(
   'libpkgbuild-image',
-  version: ['>=1.0.0', '<2.0.0'],
+  version: ['>=1.0.1', '<2.0.0'],
   required: get_option('tests'),
   static: want_static,
 )
 
 libpkgbuild_plan_test_dep = dependency(
   'libpkgbuild-plan',
-  version: ['>=1.0.0', '<2.0.0'],
+  version: ['>=1.1.0', '<2.0.0'],
   required: get_option('tests'),
   static: want_static,
 )
 
 libpkgcatalog_test_dep = dependency(
   'libpkgcatalog',
-  version: ['>=3.0.1', '<4.0.0'],
+  version: ['>=4.0.0', '<5.0.0'],
   required: get_option('tests'),
   static: want_static,
 )
 
 libpkgresolve_test_dep = dependency(
   'libpkgresolve',
-  version: ['>=3.0.0', '<4.0.0'],
+  version: ['>=4.0.0', '<5.0.0'],
   required: get_option('tests'),
   static: want_static,
 )
