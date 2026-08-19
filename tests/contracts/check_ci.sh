@@ -50,13 +50,15 @@ require_pin libpkgplan v0.3.1
 require_pin libpkgbuild-image v1.0.1
 require_pin libpkgsource-plan v2.0.0
 require_pin libpkgbuild-plan v1.1.0
-require_pin libpkgapply v3.0.1
+require_pin libpkgapply v4.0.0
 require_pin libpkgstate v3.1.0
 require_pin libpkgstate-source v4.0.0
 require_pin libpkgstate-build v3.1.0
 require_pin libpkgstate-plan v3.0.0
 grep -F 'libpkgstate-build.so.1' "$root/ci/audit-shared-boundary.sh" >/dev/null || fail 'shared audit omits state-build authority'
 grep -F 'libpkgstate-plan.so.2' "$root/ci/audit-shared-boundary.sh" >/dev/null || fail 'shared audit omits state-plan translation'
+grep -F 'libpkgapply.so.4' "$root/ci/audit-shared-boundary.sh" >/dev/null || fail 'shared audit omits application generation 4'
+if grep -F 'libpkgapply.so.2' "$root/ci/audit-shared-boundary.sh" >/dev/null; then fail 'shared audit still names obsolete application generation 2'; fi
 if grep -F 'missing libpkgstate-source.so.1' "$root/ci/audit-shared-boundary.sh" >/dev/null; then fail 'shared audit still requires test-only source adapter'; fi
 if grep -F 'missing libpkgbuild.so.3' "$root/ci/audit-shared-boundary.sh" >/dev/null; then fail 'shared audit still requires transitive build owner'; fi
 grep -F 'libpkgapply-posix' "$root/ci/audit-shared-boundary.sh" >/dev/null || fail 'shared audit does not forbid mechanism-provider coupling'

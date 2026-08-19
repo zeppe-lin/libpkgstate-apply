@@ -22,6 +22,7 @@ for file in \
   tests/unit/error_model_test.cpp \
   tests/unit/schema_test.cpp \
   tests/header/public_header_test.cpp \
+  tests/contracts/abi_layout_test.cpp \
   tests/integration/installation_publication_test.cpp \
   tests/integration/upgrade_publication_test.cpp \
   tests/integration/removal_publication_test.cpp \
@@ -35,6 +36,9 @@ for file in \
   tests/integration/state_publication_projection_test.cpp; do
   [ -s "$root/$file" ] || fail "missing $file"
 done
+
+grep -F "'abi-layout'" "$root/tests/meson.build" >/dev/null ||
+  fail 'ABI layout contract is not registered'
 
 for suite in unit integration header contract; do
   grep -F "suite: '$suite'" "$root/tests/meson.build" >/dev/null ||

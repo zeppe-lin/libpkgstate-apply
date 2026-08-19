@@ -19,7 +19,7 @@ Before tagging:
 11. replay the release mailbox into a clean repository and compare Git trees.
 
 Release after the state core, state build and plan bridges, and the
-repository-separated `libpkgapply` 3.0 generation.
+published `libpkgapply` 4.x generation.
 
 Changes in an adjacent owner require inspection of that exact repository body.
 Do not paper over an unavailable or incompatible generation with fallbacks,

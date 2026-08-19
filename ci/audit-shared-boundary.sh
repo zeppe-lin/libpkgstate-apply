@@ -11,7 +11,7 @@ printf '%s\n' "$output" | grep -F 'Library soname: [libpkgstate-apply.so.3]' >/d
 needed=$(printf '%s\n' "$output" | grep 'Shared library:' || true)
 for dependency in \
   'libpkgstate.so.4' \
-  'libpkgapply.so.2' \
+  'libpkgapply.so.4' \
   'libpkgstate-build.so.1' \
   'libpkgstate-plan.so.2' \
   'libpkgplan.so.1'

@@ -83,7 +83,8 @@ pkgconf.generate(
   subdirs: '.',
   requires: [
     'libpkgstate >= 3.0.0',
-    'libpkgapply >= 3.0.1',
+    'libpkgapply >= 4.0.0',
+    'libpkgapply < 5.0.0',
   ],
   requires_private: [
     'libpkgstate-build >= 3.1.0',

@@ -1,5 +1,5 @@
 PROJECT_NAME           = libpkgstate-apply
-PROJECT_NUMBER         = 3.1.1
+PROJECT_NUMBER         = 3.1.2
 OUTPUT_DIRECTORY       = build/doxygen
 INPUT                  = include/libpkgstate-apply
 FILE_PATTERNS          = *.h

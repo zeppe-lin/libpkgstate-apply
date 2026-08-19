@@ -72,6 +72,13 @@ if get_option('tests').allowed()
     )
   endforeach
 
+  abi_layout_test = executable(
+    'abi-layout-test',
+    'contracts/abi_layout_test.cpp',
+    dependencies: libpkgstate_apply_dep,
+  )
+  test('abi-layout', abi_layout_test, suite: 'contract')
+
   sh = find_program('sh')
   if library_kind == 'shared'
     nm = find_program('nm')
@@ -83,6 +90,15 @@ if get_option('tests').allowed()
         pkgstate_apply.full_path(),
         meson.project_source_root() / 'abi/libpkgstate-apply.exports',
         nm.full_path(),
+      ],
+      suite: 'contract',
+    )
+    test(
+      'apply-abi-generation',
+      sh,
+      args: [
+        join_paths(meson.current_source_dir(), 'contracts/check_apply_abi_generation.sh'),
+        pkgstate_apply.full_path(),
       ],
       suite: 'contract',
     )

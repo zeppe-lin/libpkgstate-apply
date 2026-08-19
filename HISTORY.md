@@ -1,5 +1,18 @@
 # History
 
+## 3.1.2 (2026-08-19)
+
+- Rebind completed-application and lease-bound state projection to the published
+  `libpkgapply 4.x` append-only application authority generation.
+- Keep `libpkgstate-apply.so.3` and the reviewed export surface after qualifying
+  the public `lease_bound_application_state` carrier across application 3.0.1
+  and 4.0.0; the embedded projection and complete adapter value preserve their
+  x86-64 size and alignment.
+- Require `libpkgapply >=4.0.0,<5.0.0` in Meson, pkg-config metadata, hosted
+  qualification, documentation, and the shared-product dependency audit.
+- Correct the stale shared-boundary audit from historical `libpkgapply.so.2` to
+  the actual generation-4 owner dependency.
+
 ## 3.1.1 (2026-08-14)
 
 - Bind private build projection to `libpkgstate-build >=3.1.0`, which closes

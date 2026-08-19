@@ -8,7 +8,7 @@ source=$root/docs/man/libpkgstate-apply.3.md
 [ -s "$source" ] || fail 'canonical Markdown manual is missing'
 first=$(sed -n '1p' "$source")
 case "$first" in
-  "% "*"(3) libpkgstate-apply | Version 3.1.1") ;;
+  "% "*"(3) libpkgstate-apply | Version 3.1.2") ;;
   *) fail "invalid Pandoc title: $first" ;;
 esac
 grep -F '# NAME' "$source" >/dev/null || fail 'NAME section is missing'

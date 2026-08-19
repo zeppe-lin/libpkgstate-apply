@@ -36,7 +36,7 @@ placement in the package-management graph.
 
 ## Dependency boundary
 
-Public installed closure: `libpkgstate >=3.0.0` and `libpkgapply >=3.0.1`.
+Public installed closure: `libpkgstate >=3.0.0` and `libpkgapply >=4.0.0,<5.0.0`.
 
 Private implementation closure: `libpkgstate-build >=3.1.0`,
 `libpkgstate-plan >=3.0.0`, `libpkgplan >=0.3.0`, and `libcrypto`.

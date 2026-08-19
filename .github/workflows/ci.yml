@@ -88,11 +88,11 @@ jobs:
           repository: zeppe-lin/libpkgbuild-plan
           ref: v1.1.0
           path: dependencies/libpkgbuild-plan
-      - name: Check out libpkgapply 3.0.1
+      - name: Check out libpkgapply 4.0.0
         uses: actions/checkout@v4
         with:
           repository: zeppe-lin/libpkgapply
-          ref: v3.0.1
+          ref: v4.0.0
           path: dependencies/libpkgapply
       - name: Check out libpkgstate 3.1.0
         uses: actions/checkout@v4
@@ -241,11 +241,11 @@ jobs:
           repository: zeppe-lin/libpkgbuild-plan
           ref: v1.1.0
           path: dependencies/libpkgbuild-plan
-      - name: Check out libpkgapply 3.0.1
+      - name: Check out libpkgapply 4.0.0
         uses: actions/checkout@v4
         with:
           repository: zeppe-lin/libpkgapply
-          ref: v3.0.1
+          ref: v4.0.0
           path: dependencies/libpkgapply
       - name: Check out libpkgstate 3.1.0
         uses: actions/checkout@v4

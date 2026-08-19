@@ -20,6 +20,6 @@ The adapter uses `libpkgstate-plan` for the canonical durable-source to planner
 control projection. It must not recreate that vocabulary locally.
 
 Release after `libpkgstate`, `libpkgstate-source`, `libpkgstate-build`,
-`libpkgstate-plan`, and the compatible `libpkgapply` 3.0 generation. Current
+`libpkgstate-plan`, and the published `libpkgapply` 4.x generation. Current
 qualification uses the authenticated source/catalog and corrected planner
 generations while retaining the proven public planner floor of 0.3.0.
