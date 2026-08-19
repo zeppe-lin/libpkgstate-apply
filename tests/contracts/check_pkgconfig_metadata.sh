@@ -5,7 +5,7 @@ set -eu
 build=$1
 pc=$build/meson-private/libpkgstate-apply.pc
 [ -s "$pc" ] || { echo "pkgconfig-metadata: missing $pc" >&2; exit 1; }
-grep -F 'Version: 3.1.2' "$pc" >/dev/null || { echo "pkgconfig-metadata: missing version 3.1.2" >&2; exit 1; }
+grep -F 'Version: 3.1.3' "$pc" >/dev/null || { echo "pkgconfig-metadata: missing version 3.1.3" >&2; exit 1; }
 grep -F -- '-lpkgstate-apply' "$pc" >/dev/null
 public=$(sed -n 's/^Requires:[[:space:]]*//p' "$pc")
 private=$(sed -n 's/^Requires\.private:[[:space:]]*//p' "$pc")

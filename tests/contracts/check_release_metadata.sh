@@ -3,10 +3,10 @@
 set -eu
 root=$1
 fail(){ echo "release-metadata: $*" >&2; exit 1; }
-grep -F "version: '3.1.2'" "$root/meson.build" >/dev/null || fail 'version is not 3.1.2'
+grep -F "version: '3.1.3'" "$root/meson.build" >/dev/null || fail 'version is not 3.1.3'
 grep -F "soversion: '3'" "$root/src/meson.build" >/dev/null || fail 'SONAME generation is wrong'
-grep -F 'PROJECT_NUMBER         = 3.1.2' "$root/Doxyfile" >/dev/null || fail 'Doxygen version is wrong'
-grep -F '## 3.1.2 (2026-08-19)' "$root/HISTORY.md" >/dev/null || fail 'history omits dated 3.1.2 release'
+grep -F 'PROJECT_NUMBER         = 3.1.3' "$root/Doxyfile" >/dev/null || fail 'Doxygen version is wrong'
+grep -F '## 3.1.3 (2026-08-19)' "$root/HISTORY.md" >/dev/null || fail 'history omits dated 3.1.3 release'
 grep -F "'libpkgstate'" "$root/meson.build" >/dev/null || fail 'missing dependency libpkgstate'
 grep -A4 -F "'libpkgstate'" "$root/meson.build" | grep -F "version: '>=3.0.0'" >/dev/null || fail 'missing floor libpkgstate >=3.0.0'
 grep -F "'libpkgapply'" "$root/meson.build" >/dev/null || fail 'missing dependency libpkgapply'

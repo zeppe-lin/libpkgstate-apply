@@ -10,7 +10,7 @@ escaping local links, leaked source/build paths, and source-format links. The
 installed tree is placed below:
 
 ```
-share/htmldocs/libpkgstate-apply/3.1.2
+share/htmldocs/libpkgstate-apply/3.1.3
 ```
 
 HTML output is derived. Edit the Markdown, headers, or Doxygen source

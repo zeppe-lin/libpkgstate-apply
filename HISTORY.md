@@ -1,5 +1,16 @@
 # History
 
+## 3.1.3 (2026-08-19)
+
+- Publish the post-3.1.2 pkg-config authority correction under a distinct
+  release coordinate instead of leaving a tagged release and its green master
+  body with the same version but different metadata.
+- Derive public and private pkg-config requirements from the exact Meson
+  dependency objects used for compilation/linking, preventing duplicate
+  `Requires` clauses and dependency-vocabulary drift.
+- Keep SONAME 3, the reviewed export surface, application-4 dependency interval,
+  and all public value layouts unchanged.
+
 ## 3.1.2 (2026-08-19)
 
 - Rebind completed-application and lease-bound state projection to the published

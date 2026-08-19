@@ -1,7 +1,7 @@
 # ABI policy
 
 `libpkgstate-apply` is an independently released C++17 shared and static
-library. Release 3.1.2 preserves SONAME generation `3` from the formerly
+library. Release 3.1.3 preserves SONAME generation `3` from the formerly
 in-tree product.
 
 The reviewed ELF export set is stored in `abi/libpkgstate-apply.exports`.
